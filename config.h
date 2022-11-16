@@ -33,6 +33,7 @@ static const char *const autostart[] = {
 	"dunst", NULL,
 	"picom", NULL,
 	"xwallpaper", "--daemon", "--zoom", "/home/cole/.wall", NULL,
+	"dwmbar", NULL,
 	NULL /* terminate */
 };
 
@@ -76,7 +77,7 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", bg, "-nf", fg, "-sb", bg_sel, "-sf", fg_sel, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-p", "run:", "-fn", dmenufont, "-nb", bg, "-nf", fg, "-sb", bg_sel, "-sf", fg_sel, "-l", "20", "-c", "-bw", "5", "-h", "22", NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 static const Key keys[] = {
@@ -118,6 +119,13 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_Escape, quit,           {0} },
 	{ MODKEY|ControlMask|ShiftMask, XK_Escape, quit,           {1} },
+
+	/* program binds */
+	{ MODKEY,                       XK_p,      spawn,          SHCMD("passmenu")},
+	{ MODKEY|ShiftMask,             XK_f,      spawn,          SHCMD("$TERMINAL nnn")},
+	{ MODKEY|ShiftMask,             XK_m,      spawn,          SHCMD("$TERMINAL cmus")},
+	{ MODKEY|ShiftMask,             XK_c,      spawn,          SHCMD("$TERMINAL calcurse")},
+	{ MODKEY|ShiftMask,             XK_a,      spawn,          SHCMD("$TERMINAL pulsemixer")},
 };
 
 /* button definitions */
