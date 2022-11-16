@@ -10,22 +10,22 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 12;        /* 2 is the default spacing around the bar's font */
 static const char *fonts[]          = { "Montserrat:style=Regular:size=14", "Material Icons:style=Regular:size=16", };
-static const char dmenufont[]       = "Montserrat:style=Regular:size=14";
-static const char fg[]     = "#d0d0d0";
-static const char bg[]     = "#1A2026";
-static const char border[] = "#262626";
-static const char fg_sel[]      = "#d0d0d0";
-static const char bg_sel[]      = "#2d3741";
-static const char border_sel[]  = "#262626";
+static const char dmenufont[]       =   "Montserrat:style=Regular:size=14";
+static const char fg[]              = "#d0d0d0";
+static const char bg[]              = "#1A2026";
+static const char border[]          = "#262626";
+static const char fg_sel[]          = "#d0d0d0";
+static const char bg_sel[]          = "#2d3741";
+static const char border_sel[]      = "#262626";
 static const char *colors[][3]      = {
 	/*                   fg         bg         border   */
-	[SchemeNorm]     = { fg,        bg,        border},
-	[SchemeSel]      = { fg_sel, 	  bg_sel,    border_sel},
-	[SchemeStatus]   = { fg,        bg,        "#000000" }, // Statusbar right {text,background,not used but cannot be empty}
-	[SchemeTagsSel]  = { fg_sel,    bg_sel,    "#000000" }, // Tagbar left selected {text,background,not used but cannot be empty}
-	[SchemeTagsNorm] = { fg,        bg,        "#000000"  }, // Tagbar left unselected {text,background,not used but cannot be empty}
-	[SchemeInfoSel]  = { fg,        bg,        "#000000"  }, // infobar middle  selected {text,background,not used but cannot be empty}
-	[SchemeInfoNorm] = { fg,        bg,        "#000000"  }, // infobar middle  unselected {text,background,not used but cannot be empty}
+	[SchemeNorm]     = { fg,        bg,        border },
+	[SchemeSel]      = { fg_sel, 	  bg_sel,    border_sel },
+	[SchemeStatus]   = { fg,        bg,        border }, // Statusbar right {text,background,not used but cannot be empty}
+	[SchemeTagsSel]  = { fg_sel,    bg_sel,    border }, // Tagbar left selected {text,background,not used but cannot be empty}
+	[SchemeTagsNorm] = { fg,        bg,        border }, // Tagbar left unselected {text,background,not used but cannot be empty}
+	[SchemeInfoSel]  = { fg,        bg,        border }, // infobar middle  selected {text,background,not used but cannot be empty}
+	[SchemeInfoNorm] = { fg,        bg,        border }, // infobar middle  unselected {text,background,not used but cannot be empty}
 };
 
 static const char *const autostart[] = {
@@ -33,7 +33,7 @@ static const char *const autostart[] = {
 	"dunst", NULL,
 	"picom", NULL,
 	"xwallpaper", "--daemon", "--zoom", "/home/cole/.wall", NULL,
-	"dwmbar", NULL,
+	"dwmblocks", NULL,
 	NULL /* terminate */
 };
 
@@ -85,6 +85,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY|ShiftMask,             XK_j,      rotatestack,    {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_k,      rotatestack,    {.i = -1 } },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_equal,  incnmaster,     {.i = +1 } },
@@ -131,16 +133,17 @@ static const Key keys[] = {
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
-	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
-	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
-	{ ClkTagBar,            0,              Button1,        view,           {0} },
-	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	/* click                event mask      button          function           argument */
+	{ ClkLtSymbol,          0,              Button1,        setlayout,         {0} },
+	{ ClkLtSymbol,          0,              Button3,        setlayout,         {.v = &layouts[2]} },
+	{ ClkWinTitle,          0,              Button2,        zoom,              {0} },
+	{ ClkStatusText,        0,              Button2,        spawn,             {.v = termcmd } },
+	{ ClkClientWin,         MODKEY,         Button1,        movemouse,         {0} },
+	{ ClkClientWin,         MODKEY,         Button2,        togglefloating,    {0} },
+	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,       {0} },
+	{ ClkTagBar,            0,              Button1,        view,              {0} },
+	{ ClkTagBar,            0,              Button3,        toggleview,        {0} },
+	{ ClkTagBar,            MODKEY,         Button1,        tag,               {0} },
+	{ ClkTagBar,            MODKEY,         Button3,        toggletag,         {0} },
+	{ ClkStatusText,        0,              Button1,        spawn,             SHCMD("$TERMINAL pulsemixer") },
 };
