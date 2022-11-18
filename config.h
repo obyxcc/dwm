@@ -2,7 +2,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 0;        /* border pixel of windows */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int gappx     = 20;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -13,10 +13,10 @@ static const char *fonts[]          = { "Montserrat:style=Regular:size=14", "Mat
 static const char dmenufont[]       =   "Montserrat:style=Regular:size=14";
 static const char fg[]              = "#d0d0d0";
 static const char bg[]              = "#1A2026";
-static const char border[]          = "#262626";
+static const char border[]          = "#2d3741";
 static const char fg_sel[]          = "#d0d0d0";
 static const char bg_sel[]          = "#2d3741";
-static const char border_sel[]      = "#262626";
+static const char border_sel[]      = "#d0d0d0";
 static const char *colors[][3]      = {
 	/*                   fg         bg         border   */
 	[SchemeNorm]     = { fg,        bg,        border },
@@ -31,7 +31,6 @@ static const char *colors[][3]      = {
 static const char *const autostart[] = {
 	"autorandr", "-l" ,"default", NULL,
 	"dunst", NULL,
-	"picom", NULL,
 	"xwallpaper", "--daemon", "--zoom", "/home/cole/.wall", NULL,
 	"dwmblocks", NULL,
 	NULL /* terminate */
@@ -46,9 +45,8 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
-	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ "St",      NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "Steam",   NULL,     NULL,           0,         0,          0,           1,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
