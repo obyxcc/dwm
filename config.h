@@ -2,8 +2,8 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int gappx     = 20;       /* gaps between windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int gappx     = 30;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -11,12 +11,12 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 12;        /* 2 is the default spacing around the bar's font */
 static const char *fonts[]          = { "Montserrat:style=Regular:size=14", "Material Icons:style=Regular:size=16", };
 static const char dmenufont[]       =   "Montserrat:style=Regular:size=14";
-static const char fg[]              = "#d0d0d0";
-static const char bg[]              = "#1A2026";
-static const char border[]          = "#2d3741";
-static const char fg_sel[]          = "#d0d0d0";
-static const char bg_sel[]          = "#2d3741";
-static const char border_sel[]      = "#d0d0d0";
+static const char fg[]              = "#CDD6F4";
+static const char bg[]              = "#1E1E2E";
+static const char border[]          = "#303446";
+static const char fg_sel[]          = "#CDD6F4";
+static const char bg_sel[]          = "#303446";
+static const char border_sel[]      = "#BABBF1";
 static const char *colors[][3]      = {
 	/*                   fg         bg         border   */
 	[SchemeNorm]     = { fg,        bg,        border },
@@ -51,7 +51,7 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
@@ -126,6 +126,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_m,      spawn,          SHCMD("$TERMINAL cmus")},
 	{ MODKEY|ShiftMask,             XK_c,      spawn,          SHCMD("$TERMINAL calcurse")},
 	{ MODKEY|ShiftMask,             XK_a,      spawn,          SHCMD("$TERMINAL pulsemixer")},
+	{ MODKEY|ShiftMask|ControlMask, XK_w,      spawn,          SHCMD("xwallpaper --daemon --zoom $HOME/.wall")},
 };
 
 /* button definitions */
@@ -143,5 +144,5 @@ static const Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,        {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,               {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,         {0} },
-	{ ClkStatusText,        0,              Button1,        spawn,             SHCMD("$TERMINAL pulsemixer") },
+	{ ClkStatusText,        0,              Button1,        spawn,             SHCMD("eww open --toggle dashboard") },
 };
