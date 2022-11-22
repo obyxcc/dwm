@@ -10,7 +10,6 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 12;        /* 2 is the default spacing around the bar's font */
 static const char *fonts[]          = { "Montserrat:style=Regular:size=14", "Material Icons:style=Regular:size=16", };
-static const char dmenufont[]       =   "Montserrat:style=Regular:size=14";
 static const char fg[]              = "#CDD6F4";
 static const char bg[]              = "#1E1E2E";
 static const char border[]          = "#303446";
@@ -30,8 +29,9 @@ static const char *colors[][3]      = {
 
 static const char *const autostart[] = {
 	"autorandr", "-l" ,"default", NULL,
+	"picom", NULL,
 	"dunst", NULL,
-	"xwallpaper", "--daemon", "--zoom", "/home/cole/.wall", NULL,
+	"xwallpaper", "--daemon", "--zoom", "/home/cole/.config/wall", NULL,
 	"dwmblocks", NULL,
 	NULL /* terminate */
 };
@@ -75,7 +75,7 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *dmenucmd[] = { "dmenu_run", "-p", "run:", "-fn", dmenufont, "-nb", bg, "-nf", fg, "-sb", bg_sel, "-sf", fg_sel, "-l", "20", "-c", "-bw", "5", "-h", "22", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-p", "run:", NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 static const Key keys[] = {
@@ -136,7 +136,9 @@ static const Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,         {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,         {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,              {0} },
+	{ ClkStatusText,        0,              Button1,        spawn,             SHCMD("eww open --toggle dashboard") },
 	{ ClkStatusText,        0,              Button2,        spawn,             {.v = termcmd } },
+	{ ClkStatusText,        0,              Button3,        spawn,             {.v = dmenucmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,         {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating,    {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,       {0} },
@@ -144,5 +146,4 @@ static const Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,        {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,               {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,         {0} },
-	{ ClkStatusText,        0,              Button1,        spawn,             SHCMD("eww open --toggle dashboard") },
 };
