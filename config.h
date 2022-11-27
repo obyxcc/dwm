@@ -3,13 +3,13 @@
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
-static const unsigned int gappx     = 30;       /* gaps between windows */
+static const unsigned int gappx     = 22;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int user_bh            = 12;        /* 2 is the default spacing around the bar's font */
-static const char *fonts[]          = { "Montserrat:style=Regular:size=14", "Material Icons:style=Regular:size=16", };
+static const int user_bh            = 14;        /* 2 is the default spacing around the bar's font */
+static const char *fonts[]          = { "Montserrat:style=Regular:size=12", "FiraCode Nerd Font:style=Regular:size=14" };
 static const char fg[]              = "#CDD6F4";
 static const char bg[]              = "#1E1E2E";
 static const char border[]          = "#303446";
@@ -58,9 +58,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "\uf114",      tile },    /* first entry is default */
-	{ "\ue069",      NULL },    /* no layout function means floating behavior */
-	{ "\ue5d0",      monocle },
+	{ "\ufa6f",      tile },    /* first entry is default */
+	{ "\ufab1",      NULL },    /* no layout function means floating behavior */
+	{ "\uf2d0",      monocle },
 };
 
 /* key definitions */
