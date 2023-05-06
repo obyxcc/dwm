@@ -9,7 +9,7 @@ static const int swallowfloating    = 0;        /* 1 means swallow floating wind
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 14;        /* 2 is the default spacing around the bar's font */
-static const char *fonts[]          = { "Montserrat:style=Regular:size=12", "FiraCode Nerd Font:style=Regular:size=14" };
+static const char *fonts[]          = { "JetBrains Mono:style=Regular:size=14" };
 static const char fg[]              = "#CDD6F4";
 static const char bg[]              = "#1E1E2E";
 static const char border[]          = "#626880";
@@ -27,6 +27,7 @@ static const char *colors[][3]      = {
 	[SchemeInfoNorm] = { fg,        bg,        border }, // infobar middle  unselected {text,background,not used but cannot be empty}
 };
 
+/* autostart applications */
 static const char *const autostart[] = {
 	"autorandr", "-l" ,"default", NULL,
 	"picom", NULL,
@@ -47,7 +48,7 @@ static const Rule rules[] = {
 	 */
 	/* class          instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "st-256color",  NULL,     NULL,           0,         0,          1,          -1,        -1 },
-	{ "Steam",        NULL,     NULL,           0,         0,          0,           1,        -1 },
+	{ "Steam",        NULL,     NULL,           0,         1,          0,           1,        -1 },
 	{ NULL,           NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
@@ -59,9 +60,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "\ufa6f",      tile },    /* first entry is default */
-	{ "\ufab1",      NULL },    /* no layout function means floating behavior */
-	{ "\uf2d0",      monocle },
+	{ "[]=",      tile },    /* first entry is default */
+	{ "><>",      NULL },    /* no layout function means floating behavior */
+	{ "[M]",      monocle },
 };
 
 /* key definitions */
@@ -76,12 +77,10 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
+static const char *termcmd[]  = { "st", NULL };
 static const char *dmenucmd[] = { "dmenu_run", "-p", "run:", NULL };
 static const char *dmenupcmd[] = { "dmenu_prun", NULL };
-static const char *termcmd[]  = { "st", NULL };
 static const char *passmenucmd[]  = { "passmenu", NULL };
-static const char *toggledash[]  = { "eww", "open", "--toggle", "dashboard", NULL };
-static const char *autorandrcmd[]  = { "autorandr", "--change", NULL };
 static const char *brightnesscmd[2][4] = {
 	{ "xbacklight", "-inc", "5%", NULL },
 	{ "xbacklight", "-dec", "5%", NULL },
@@ -114,7 +113,6 @@ static const Key keys[] = {
 	{0,                             XF86XK_AudioPlay,         spawn,          {.v = cmuscmd[0]} },
   {0,                             XF86XK_AudioNext,         spawn,          {.v = cmuscmd[1]} },
   {0,                             XF86XK_AudioPrev,         spawn,          {.v = cmuscmd[2]} },
-	{ MODKEY|ShiftMask,             XK_x,                     spawn,          {.v = autorandrcmd } },
 	{ MODKEY,                       XK_b,                     togglebar,      {0} },
 	{ MODKEY|ShiftMask,             XK_j,                     rotatestack,    {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,                     rotatestack,    {.i = -1 } },
@@ -170,9 +168,7 @@ static const Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,         {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,         {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,              {0} },
-	{ ClkStatusText,        0,              Button1,        spawn,             {.v = toggledash } },
 	{ ClkStatusText,        0,              Button2,        spawn,             {.v = termcmd } },
-	{ ClkStatusText,        0,              Button3,        spawn,             {.v = dmenucmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,         {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating,    {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,       {0} },
