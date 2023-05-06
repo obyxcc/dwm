@@ -9,7 +9,7 @@ static const int swallowfloating    = 0;        /* 1 means swallow floating wind
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 14;        /* 2 is the default spacing around the bar's font */
-static const char *fonts[]          = { "JetBrains Mono:style=Regular:size=14" };
+static const char *fonts[]          = { "JetBrains Mono:style=Bold:size=14" };
 static const char fg[]              = "#CDD6F4";
 static const char bg[]              = "#1E1E2E";
 static const char border[]          = "#626880";
