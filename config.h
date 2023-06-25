@@ -9,7 +9,7 @@ static const int swallowfloating    = 0;        /* 1 means swallow floating wind
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 14;        /* 2 is the default spacing around the bar's font */
-static const char *fonts[]          = { "JetBrains Mono:style=Bold:size=14" };
+static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=12" };
 static const char fg[]              = "#CDD6F4";
 static const char bg[]              = "#1E1E2E";
 static const char border[]          = "#626880";
@@ -30,10 +30,9 @@ static const char *colors[][3]      = {
 /* autostart applications */
 static const char *const autostart[] = {
 	"autorandr", "-l" ,"default", NULL,
-	"picom", NULL,
+	// "picom", NULL,
 	"dunst", NULL,
 	"xwallpaper", "--daemon", "--zoom", "/home/cole/.config/wall", NULL,
-	"transmission-daemon", NULL,
 	"dwmblocks", NULL,
 	NULL /* terminate */
 };
@@ -48,7 +47,7 @@ static const Rule rules[] = {
 	 */
 	/* class          instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "st-256color",  NULL,     NULL,           0,         0,          1,          -1,        -1 },
-	{ "Steam",        NULL,     NULL,           0,         1,          0,           1,        -1 },
+	{ "steam",        NULL,     NULL,           0,         1,          0,           1,        -1 },
 	{ NULL,           NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
@@ -81,9 +80,10 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *dmenucmd[] = { "dmenu_run", "-p", "run:", NULL };
 static const char *dmenupcmd[] = { "dmenu_prun", NULL };
 static const char *passmenucmd[]  = { "passmenu", NULL };
+static const char *dmtunecmd[]  = { "dmtune", NULL };
 static const char *brightnesscmd[2][4] = {
-	{ "xbacklight", "-inc", "5%", NULL },
-	{ "xbacklight", "-dec", "5%", NULL },
+	{ "xbacklight", "-inc", "10%", NULL },
+	{ "xbacklight", "-dec", "10%", NULL },
 };
 static const char *volumecmd[3][5] = {
 	{ "wpctl", "set-volume", "@DEFAULT_SINK@", "0.05+", NULL },
@@ -130,10 +130,11 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_m,											setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,									setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,									togglefloating, {0} },
+	{ MODKEY|ControlMask,           XK_f,                     togglefullscr,  {0} },
 	{ MODKEY,                       XK_0,											view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,											tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_h,											focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_l,											focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_h,											focusmon,       {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_l,											focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,									tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period,								tagmon,         {.i = +1 } },
 	{ MODKEY,                       XK_minus,									setgaps,        {.i = -1 } },
@@ -153,6 +154,7 @@ static const Key keys[] = {
 
 	/* program binds */
 	{ MODKEY,                       XK_p,											spawn,          {.v = passmenucmd } },
+	{ MODKEY|ShiftMask,             XK_t,											spawn,          {.v = dmtunecmd } },
 	{ MODKEY,                       XK_Print,       					spawn,          {.v = flameshotcmd[0]} },
 	{ MODKEY|ShiftMask,             XK_Print,       					spawn,          {.v = flameshotcmd[1]} },
 	{ MODKEY|ShiftMask,             XK_f,											spawn,          SHCMD("$TERMINAL nnn")},
