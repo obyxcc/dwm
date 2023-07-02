@@ -3,8 +3,8 @@
 #include "movestack.c"
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
-static const unsigned int gappx     = 22;       /* gaps between windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int gappx     = 16;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -12,7 +12,7 @@ static const int user_bh            = 14;       /* 2 is the default spacing arou
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=12" };
 static const char fg[]              = "#CDD6F4";
 static const char bg[]              = "#1E1E2E";
-static const char border[]          = "#626880";
+static const char border[]          = "#1E1E2E";
 static const char fg_sel[]          = "#CDD6F4";
 static const char bg_sel[]          = "#303446";
 static const char border_sel[]      = "#CDD6F4";
@@ -30,7 +30,7 @@ static const char *colors[][3]      = {
 /* autostart applications */
 static const char *const autostart[] = {
 	"autorandr", "-c", NULL,
-	"picom", NULL,
+	"picom", "-b", NULL,
 	"dunst", NULL,
 	"xwallpaper", "--daemon", "--zoom", "/home/cole/.config/wall", NULL,
 	"dwmblocks", NULL,
@@ -120,6 +120,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_k,                     focusstack,     {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_j,                     movestack,      {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,                     movestack,      {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_j,                     rotatestack,    {.i = +1 } },
+	{ MODKEY|ControlMask,           XK_k,                     rotatestack,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_equal,                 incnmaster,     {.i = +1 } },
 	{ MODKEY|ControlMask,           XK_minus,                 incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_comma,                 setmfact,       {.f = -0.05} },
@@ -139,9 +141,10 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_l,											focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,									tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period,								tagmon,         {.i = +1 } },
-	{ MODKEY,                       XK_minus,									setgaps,        {.i = -1 } },
-	{ MODKEY,                       XK_equal,									setgaps,        {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_equal,									setgaps,        {.i = 0  } },
+	{ MODKEY,                       XK_minus,									setgaps,        {.i = -4 } },
+	{ MODKEY,                       XK_equal,									setgaps,        {.i = +4 } },
+	{ MODKEY|ShiftMask|ControlMask, XK_equal,									setgaps,        {.i = 0 } },
+  { MODKEY|ShiftMask,             XK_equal,									setgaps,        {.i = gappx } },
 	TAGKEYS(                        XK_1,											 							  0)
 	TAGKEYS(                        XK_2,											 							  1)
 	TAGKEYS(                        XK_3,											 							  2)
