@@ -63,6 +63,11 @@ static const Layout layouts[] = {
 	{ "󰝤",      monocle },
 };
 
+/* window following */
+#define WFACTIVE '>'
+#define WFINACTIVE 'v'
+#define WFDEFAULT WFINACTIVE
+
 /* key definitions */
 #define MODKEY Mod1Mask
 #define TAGKEYS(KEY,TAG) \
@@ -116,6 +121,7 @@ static const Key keys[] = {
   {0,                             XF86XK_AudioNext,         spawn,          {.v = cmuscmd[1]} },
   {0,                             XF86XK_AudioPrev,         spawn,          {.v = cmuscmd[2]} },
 	{ MODKEY,                       XK_b,                     togglebar,      {0} },
+	{ MODKEY,                       XK_n,                     togglefollow,   {0} },
 	{ MODKEY,                       XK_j,                     focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,                     focusstack,     {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_j,                     movestack,      {.i = +1 } },
@@ -174,6 +180,7 @@ static const Button buttons[] = {
 	/* click                event mask      button          function           argument */
 	{ ClkLtSymbol,          0,              Button1,        setlayout,         {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,         {.v = &layouts[2]} },
+	{ ClkFollowSymbol,      0,              Button1,        togglefollow,   {0} },
 	{ ClkWinTitle,          0,              Button2,        zoom,              {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,             {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,         {0} },
