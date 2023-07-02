@@ -1,21 +1,21 @@
-#include <X11/XF86keysym.h>
 /* See LICENSE file for copyright and license details. */
+#include <X11/XF86keysym.h>
+#include "movestack.c"
 
 /* appearance */
-static const unsigned int borderpx  = 0;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int gappx     = 22;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
-static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int user_bh            = 14;        /* 2 is the default spacing around the bar's font */
+static const int user_bh            = 14;       /* 2 is the default spacing around the bar's font */
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=12" };
 static const char fg[]              = "#CDD6F4";
 static const char bg[]              = "#1E1E2E";
 static const char border[]          = "#626880";
 static const char fg_sel[]          = "#CDD6F4";
 static const char bg_sel[]          = "#303446";
-static const char border_sel[]      = "#BABBF1";
+static const char border_sel[]      = "#CDD6F4";
 static const char *colors[][3]      = {
 	/*                   fg         bg         border   */
 	[SchemeNorm]     = { fg,        bg,        border },
@@ -29,8 +29,8 @@ static const char *colors[][3]      = {
 
 /* autostart applications */
 static const char *const autostart[] = {
-	"autorandr", "-l" ,"default", NULL,
-	// "picom", NULL,
+	"autorandr", "-c", NULL,
+	"picom", NULL,
 	"dunst", NULL,
 	"xwallpaper", "--daemon", "--zoom", "/home/cole/.config/wall", NULL,
 	"dwmblocks", NULL,
@@ -45,23 +45,22 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class          instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "st-256color",  NULL,     NULL,           0,         0,          1,          -1,        -1 },
-	{ "steam",        NULL,     NULL,           0,         1,          0,           1,        -1 },
-	{ NULL,           NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
+	/* class      instance    title       tags mask     isfloating   monitor */
+	{ "steam",    NULL,       NULL,       0,            1,           -1 },
+	// { "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 };
 
 /* layout(s) */
-static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	{ "󰕰",      tile },    /* first entry is default */
+	{ "󰖲",      NULL },    /* no layout function means floating behavior */
+	{ "󰝤",      monocle },
 };
 
 /* key definitions */
@@ -77,6 +76,8 @@ static const Layout layouts[] = {
 
 /* commands */
 static const char *termcmd[]  = { "st", NULL };
+static const char scratchpadname[] = "scratchpad";
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 static const char *dmenucmd[] = { "dmenu_run", "-p", "run:", NULL };
 static const char *dmenupcmd[] = { "dmenu_prun", NULL };
 static const char *passmenucmd[]  = { "passmenu", NULL };
@@ -105,6 +106,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_d,                     spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_d,                     spawn,          {.v = dmenupcmd } },
 	{ MODKEY,                       XK_Return,                spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_grave,                 togglescratch,  {.v = scratchpadcmd } },
 	{0,                             XF86XK_MonBrightnessUp,   spawn,          {.v = brightnesscmd[0]} },
   {0,                             XF86XK_MonBrightnessDown, spawn,          {.v = brightnesscmd[1]} },
 	{0,                             XF86XK_AudioRaiseVolume,  spawn,          {.v = volumecmd[0]} },
@@ -114,10 +116,10 @@ static const Key keys[] = {
   {0,                             XF86XK_AudioNext,         spawn,          {.v = cmuscmd[1]} },
   {0,                             XF86XK_AudioPrev,         spawn,          {.v = cmuscmd[2]} },
 	{ MODKEY,                       XK_b,                     togglebar,      {0} },
-	{ MODKEY|ShiftMask,             XK_j,                     rotatestack,    {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_k,                     rotatestack,    {.i = -1 } },
 	{ MODKEY,                       XK_j,                     focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,                     focusstack,     {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_j,                     movestack,      {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_k,                     movestack,      {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_equal,                 incnmaster,     {.i = +1 } },
 	{ MODKEY|ControlMask,           XK_minus,                 incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_comma,                 setmfact,       {.f = -0.05} },
@@ -128,9 +130,9 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_t,                     setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,											setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,											setlayout,      {.v = &layouts[2]} },
+	{ MODKEY|ShiftMask,             XK_f,                     togglefullscr,  {0} },
 	{ MODKEY,                       XK_space,									setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,									togglefloating, {0} },
-	{ MODKEY|ControlMask,           XK_f,                     togglefullscr,  {0} },
 	{ MODKEY,                       XK_0,											view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,											tag,            {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_h,											focusmon,       {.i = -1 } },
@@ -157,7 +159,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_t,											spawn,          {.v = dmtunecmd } },
 	{ MODKEY,                       XK_Print,       					spawn,          {.v = flameshotcmd[0]} },
 	{ MODKEY|ShiftMask,             XK_Print,       					spawn,          {.v = flameshotcmd[1]} },
-	{ MODKEY|ShiftMask,             XK_f,											spawn,          SHCMD("$TERMINAL nnn")},
+	{ MODKEY|ShiftMask,             XK_n,											spawn,          SHCMD("$TERMINAL nnn")},
 	{ MODKEY|ShiftMask,             XK_m,											spawn,          SHCMD("$TERMINAL cmus")},
 	{ MODKEY|ShiftMask,             XK_c,											spawn,          SHCMD("$TERMINAL calcurse")},
 	{ MODKEY|ShiftMask,             XK_a,											spawn,          SHCMD("$TERMINAL pulsemixer")},
