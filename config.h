@@ -8,13 +8,15 @@ static const unsigned int gappx     = 20;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int user_bh            = 14;       /* 2 is the default spacing around the bar's font */
+static const int user_bh            = 4;       /* 2 is the default spacing around the bar's font */
+static const int horizpadbar        = 0;        /* horizontal padding for statusbar */
+static const int vertpadbar         = 12;        /* vertical padding for statusbar */
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=12" };
 static const char fg[]              = "#CDD6F4";
 static const char bg[]              = "#1E1E2E";
-static const char border[]          = "#1E1E2E";
 static const char fg_sel[]          = "#CDD6F4";
 static const char bg_sel[]          = "#303446";
+static const char border[]          = "#1E1E2E";
 static const char border_sel[]      = "#CDD6F4";
 static const char *colors[][3]      = {
 	/*                   fg         bg         border   */
