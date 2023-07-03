@@ -57,19 +57,19 @@ click on a tag label applies that tag to the focused window.
 click on a tag label adds/removes that tag to/from the focused window.
 .SS Keyboard commands
 .TP
-.B Mod1\-Shift\-Return
+.B Mod1\-Return
 Start
 .BR st(1).
 .TP
-.B Mod1\-p
+.B Mod1\-d
 Spawn
 .BR dmenu(1)
 for launching other programs.
 .TP
-.B Mod1\-,
+.B Mod1\-Shift\-h,
 Focus previous screen, if any.
 .TP
-.B Mod1\-.
+.B Mod1\-Shift\-l,
 Focus next screen, if any.
 .TP
 .B Mod1\-Shift\-,
@@ -102,22 +102,34 @@ Focus next window.
 .B Mod1\-k
 Focus previous window.
 .TP
-.B Mod1\-i
+.B Mod1\-Shift\-j
+Move focused window down in the stack .
+.TP
+.B Mod1\-Shift\-k
+Move focused window up in the stack .
+.TP
+.B Mod1\-Control\-j
+Rotate stack clockwise
+.TP
+.B Mod1\-Control\-k
+Rotate stack counterclockwise
+.TP
+.B Mod1\-Control\-=
 Increase number of windows in master area.
 .TP
-.B Mod1\-d
+.B Mod1\-Control\--
 Decrease number of windows in master area.
 .TP
-.B Mod1\-l
+.B Mod1\-,
 Increase master area size.
 .TP
-.B Mod1\-h
+.B Mod1\-.
 Decrease master area size.
 .TP
-.B Mod1\-Return
+.B Mod1\-Shift\-Return
 Zooms/cycles focused window to/from master area (tiled layouts only).
 .TP
-.B Mod1\-Shift\-c
+.B Mod1\-Shift\-q
 Close focused window.
 .TP
 .B Mod1\-Shift\-f
@@ -156,6 +168,7 @@ Increase the gaps around windows.
 .B Mod1\-Shift\-Control-=
 Reset the gaps around windows to
 .BR 0 .
+.TP
 .B Mod1\-Shift\-=
 Reset the gaps around windows to
 .BR default .
