@@ -1298,6 +1298,8 @@ killallunsel(const Arg *arg)
 void
 killall(const Arg *arg)
 {
+	Client *i = NULL;
+
 	for (i = selmon->clients; i; i = i->next) {
     if (!sendevent(i, wmatom[WMDelete])) {
       XGrabServer(dpy);
@@ -2199,7 +2201,6 @@ togglefullscr(const Arg *arg)
     setfullscreen(selmon->sel, !selmon->sel->isfullscreen);
 }
 
-//dont toggle scratchpads TODO
 void
 toggletag(const Arg *arg)
 {
