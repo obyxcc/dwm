@@ -39,6 +39,25 @@ static const char *const autostart[] = {
 	NULL /* terminate */
 };
 
+/* scratchpads */
+typedef struct {
+	const char *name;
+	const void *cmd;
+} Sp;
+const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd2[] = {"st", "-n", "spmix", "-g", "144x41", "-e", "pulsemixer", NULL };
+const char *spcmd3[] = {"st", "-n", "spmus", "-g", "144x41", "-e", "cmus", NULL };
+const char *spcmd4[] = {"st", "-n", "spfm", "-e", "nnn", NULL };
+const char *spcmd5[] = {"st", "-n", "spcldr", "-e", "calcurse", NULL };
+static Sp scratchpads[] = {
+	/* name          cmd  */
+	{"spterm",      spcmd1},
+	{"spmix",       spcmd2},
+	{"spmus",       spcmd3},
+	{"spfm",        spcmd4},
+	{"spcldr",      spcmd5},
+};
+
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -47,9 +66,14 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "steam",    NULL,       NULL,       0,            1,           -1 },
-	// { "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class      instance     title       tags mask     isfloating   monitor */
+	{ "steam",    NULL,        NULL,       0,            1,           -1 },
+	{ "Firefox",  NULL,        NULL,       1 << 8,       0,           -1 },
+	{ NULL,		    "spterm",		 NULL,		   SPTAG(0),		 1,    			  -1 },
+	{ NULL,		    "spmix",		 NULL,		   SPTAG(1),		 1,			      -1 },
+	{ NULL,		    "spmus",     NULL,		   SPTAG(2),		 1,			      -1 },
+	{ NULL,		    "spfm",      NULL,		   SPTAG(3),		 0,			      -1 },
+	{ NULL,		    "spcldr",    NULL,		   SPTAG(4),		 0,			      -1 },
 };
 
 /* layout(s) */
@@ -146,6 +170,11 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_l,											focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,									tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period,								tagmon,         {.i = +1 } },
+	{ MODKEY,            			      XK_grave,                 togglescratch,  {.ui = 0 } },
+	{ MODKEY|ShiftMask,  			      XK_a,	                    togglescratch,  {.ui = 1 } },
+	{ MODKEY|ShiftMask,  			      XK_m,	                    togglescratch,  {.ui = 2 } },
+	{ MODKEY|ShiftMask,  			      XK_n,	                    togglescratch,  {.ui = 3 } },
+	{ MODKEY|ShiftMask,  			      XK_c,	                    togglescratch,  {.ui = 4 } },
 	{ MODKEY,                       XK_minus,									setgaps,        {.i = -4 } },
 	{ MODKEY,                       XK_equal,									setgaps,        {.i = +4 } },
 	{ MODKEY|ShiftMask|ControlMask, XK_equal,									setgaps,        {.i = 0 } },
@@ -167,10 +196,6 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_t,											spawn,          {.v = dmtunecmd } },
 	{ MODKEY,                       XK_Print,       					spawn,          {.v = flameshotcmd[0]} },
 	{ MODKEY|ShiftMask,             XK_Print,       					spawn,          {.v = flameshotcmd[1]} },
-	{ MODKEY|ShiftMask,             XK_n,											spawn,          SHCMD("$TERMINAL nnn")},
-	{ MODKEY|ShiftMask,             XK_m,											spawn,          SHCMD("$TERMINAL cmus")},
-	{ MODKEY|ShiftMask,             XK_c,											spawn,          SHCMD("$TERMINAL calcurse")},
-	{ MODKEY|ShiftMask,             XK_a,											spawn,          SHCMD("$TERMINAL pulsemixer")},
 };
 
 /* button definitions */
