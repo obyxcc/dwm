@@ -83,8 +83,6 @@ static const Layout layouts[] = {
 
 /* commands */
 static const char *termcmd[]  = { "st", NULL };
-static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 static const char *dmenucmd[] = { "dmenu_run", "-p", "run:", NULL };
 static const char *dmenupcmd[] = { "dmenu_prun", NULL };
 static const char *passmenucmd[]  = { "passmenu", NULL };
@@ -113,7 +111,6 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_d,                     spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_d,                     spawn,          {.v = dmenupcmd } },
 	{ MODKEY,                       XK_Return,                spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_grave,                 togglescratch,  {.v = scratchpadcmd } },
 	{0,                             XF86XK_MonBrightnessUp,   spawn,          {.v = brightnesscmd[0]} },
   {0,                             XF86XK_MonBrightnessDown, spawn,          {.v = brightnesscmd[1]} },
 	{0,                             XF86XK_AudioRaiseVolume,  spawn,          {.v = volumecmd[0]} },
