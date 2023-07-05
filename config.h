@@ -6,6 +6,7 @@
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int gappx     = 20;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
+static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 4;        /* 2 is the default spacing around the bar's font */
@@ -72,15 +73,17 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance     title       tags mask     isfloating   monitor */
-	{ "steam",    NULL,        NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,        NULL,       1 << 8,       0,           -1 },
-	{ NULL,		    "spterm",		 NULL,		   SPTAG(0),		 1,    			  -1 },
-	{ NULL,		    "spmix",		 NULL,		   SPTAG(1),		 1,			      -1 },
-	{ NULL,		    "spmus",     NULL,		   SPTAG(2),		 1,			      -1 },
-	{ NULL,		    "spfm",      NULL,		   SPTAG(3),		 0,			      -1 },
-	{ NULL,		    "spcldr",    NULL,		   SPTAG(4),		 0,			      -1 },
-	{ NULL,		    "spnews",    NULL,		   SPTAG(5),		 1,			      -1 },
+	/* class              instance     title           tags mask     isfloating  isterminal  noswallow  monitor */
+	{ "steam",            NULL,        NULL,           0,            1,          0,           1,        -1 },
+	{ "Firefox",          NULL,        NULL,           1 << 8,       0,          0,           0,        -1 },
+	{ "st-256color",      NULL,        NULL,           0,            0,          1,           0,        -1 },
+	{ NULL,		            "spterm",		 NULL,		       SPTAG(0),		 1,    			 0,           1,        -1 },
+	{ NULL,		            "spmix",		 NULL,		       SPTAG(1),		 1,			     0,           1,        -1 },
+	{ NULL,		            "spmus",     NULL,		       SPTAG(2),		 1,			     0,           1,        -1 },
+	{ NULL,		            "spfm",      NULL,		       SPTAG(3),		 0,			     0,           1,        -1 },
+	{ NULL,		            "spcldr",    NULL,		       SPTAG(4),		 0,			     0,           1,        -1 },
+	{ NULL,		            "spnews",    NULL,		       SPTAG(5),		 1,			     0,           1,        -1 },
+	{ NULL,               NULL,        "Event Tester", 0,            0,          0,           1,        -1 }, /* xev */
 };
 
 /* layout(s) */
