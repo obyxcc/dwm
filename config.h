@@ -44,11 +44,12 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd1[] = {"st", "-n", "spterm", "-g", "144x41", NULL };
 const char *spcmd2[] = {"st", "-n", "spmix", "-g", "144x41", "-e", "pulsemixer", NULL };
 const char *spcmd3[] = {"st", "-n", "spmus", "-g", "144x41", "-e", "cmus", NULL };
 const char *spcmd4[] = {"st", "-n", "spfm", "-e", "nnn", NULL };
 const char *spcmd5[] = {"st", "-n", "spcldr", "-e", "calcurse", NULL };
+const char *spcmd6[] = {"st", "-n", "spnews", "-g", "144x41", "-e", "newsboat", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
@@ -56,10 +57,13 @@ static Sp scratchpads[] = {
 	{"spmus",       spcmd3},
 	{"spfm",        spcmd4},
 	{"spcldr",      spcmd5},
+	{"spnews",      spcmd6},
 };
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tagsalt[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -74,6 +78,7 @@ static const Rule rules[] = {
 	{ NULL,		    "spmus",     NULL,		   SPTAG(2),		 1,			      -1 },
 	{ NULL,		    "spfm",      NULL,		   SPTAG(3),		 0,			      -1 },
 	{ NULL,		    "spcldr",    NULL,		   SPTAG(4),		 0,			      -1 },
+	{ NULL,		    "spnews",    NULL,		   SPTAG(5),		 1,			      -1 },
 };
 
 /* layout(s) */
@@ -173,11 +178,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_l,											focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,									tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period,								tagmon,         {.i = +1 } },
-	{ MODKEY,            			      XK_grave,                 togglescratch,  {.ui = 0 } },
-	{ MODKEY|ShiftMask,  			      XK_a,	                    togglescratch,  {.ui = 1 } },
-	{ MODKEY|ShiftMask,  			      XK_m,	                    togglescratch,  {.ui = 2 } },
-	{ MODKEY|ShiftMask,  			      XK_n,	                    togglescratch,  {.ui = 3 } },
-	{ MODKEY|ShiftMask,  			      XK_c,	                    togglescratch,  {.ui = 4 } },
+	{ MODKEY|ControlMask,           XK_b,                     togglealttag,   {0} },
 	{ MODKEY,                       XK_minus,									setgaps,        {.i = -4 } },
 	{ MODKEY,                       XK_equal,									setgaps,        {.i = +4 } },
 	{ MODKEY|ShiftMask|ControlMask, XK_equal,									setgaps,        {.i = 0 } },
@@ -193,6 +194,14 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_9,											 							  8)
 	{ MODKEY|ShiftMask,             XK_Escape,								quit,           {0} },
 	{ MODKEY|ControlMask|ShiftMask, XK_Escape,								quit,           {1} },
+
+	/* scratchpad binds */
+	{ MODKEY,            			      XK_grave,                 togglescratch,  {.ui = 0 } },
+	{ MODKEY|ShiftMask,  			      XK_a,	                    togglescratch,  {.ui = 1 } },
+	{ MODKEY|ShiftMask,  			      XK_m,	                    togglescratch,  {.ui = 2 } },
+	{ MODKEY|ShiftMask,  			      XK_n,	                    togglescratch,  {.ui = 3 } },
+	{ MODKEY|ShiftMask,  			      XK_c,	                    togglescratch,  {.ui = 4 } },
+	{ MODKEY|ShiftMask,  			      XK_b,	                    togglescratch,  {.ui = 5 } },
 
 	/* program binds */
 	{ MODKEY,                       XK_p,											spawn,          {.v = passmenucmd } },
