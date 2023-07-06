@@ -26,7 +26,6 @@ static const char *colors[][3]      = {
 	[SchemeNorm]     = { fg,        bg,        border },
 	[SchemeSel]      = { fg_sel, 	  bg_sel,    border_sel },
 	[SchemeStatus]   = { fg,        bg,        border }, // Statusbar right {text,background,not used but cannot be empty}
-	[SchemeTagsSel]  = { fg_sel,    bg_sel,    border }, // Tagbar left selected {text,background,not used but cannot be empty}
 	[SchemeTagsNorm] = { fg,        bg,        border }, // Tagbar left unselected {text,background,not used but cannot be empty}
 	[SchemeInfoSel]  = { fg,        bg,        border }, // infobar middle  selected {text,background,not used but cannot be empty}
 	[SchemeInfoNorm] = { fg,        bg,        border }, // infobar middle  unselected {text,background,not used but cannot be empty}
@@ -64,8 +63,8 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-static const char *tagsalt[] = { "󰖟", "", "", "󰙯", "", "󰎈", "󰕝", "", "" };
+static const char *tags[] = { "󰖟", "", "", "󰙯", "", "󰎈", "󰕝", "", "" };
+static const char *tagsalt[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
 
 static const char *tagsel[][2] = {
@@ -79,7 +78,6 @@ static const char *tagsel[][2] = {
 	{ "#CDD6F4", "#303446" },
 	{ "#CDD6F4", "#303446" },
 };
-
 
 static const Rule rules[] = {
 	/* xprop(1):
