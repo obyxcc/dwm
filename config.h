@@ -12,8 +12,8 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 4;        /* 2 is the default spacing around the bar's font */
 static const int horizpadbar        = 0;        /* horizontal padding for statusbar */
 static const int vertpadbar         = 12;       /* vertical padding for statusbar */
-static const int vertpad            = 10;       /* vertical padding of bar */
-static const int sidepad            = 10;       /* horizontal padding of bar */
+static const int vertpad            = 0;        /* vertical padding of bar */
+static const int sidepad            = 0;        /* horizontal padding of bar */
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=12" };
 static const char fg[]              = "#CDD6F4";
 static const char bg[]              = "#1E1E2E";
