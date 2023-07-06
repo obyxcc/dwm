@@ -49,17 +49,15 @@ typedef struct {
 const char *spcmd1[] = {"st", "-n", "spterm", "-g", "144x41", NULL };
 const char *spcmd2[] = {"st", "-n", "spmix", "-g", "144x41", "-e", "pulsemixer", NULL };
 const char *spcmd3[] = {"st", "-n", "spmus", "-g", "144x41", "-e", "cmus", NULL };
-const char *spcmd4[] = {"st", "-n", "spfm", "-e", "nnn", NULL };
-const char *spcmd5[] = {"st", "-n", "spcldr", "-e", "calcurse", NULL };
-const char *spcmd6[] = {"st", "-n", "spnews", "-g", "144x41", "-e", "newsboat", NULL };
+const char *spcmd4[] = {"st", "-n", "spcldr", "-g", "144x41", "-e", "calcurse", NULL };
+const char *spcmd5[] = {"st", "-n", "spnews", "-g", "144x41", "-e", "newsboat", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
 	{"spmix",       spcmd2},
 	{"spmus",       spcmd3},
-	{"spfm",        spcmd4},
-	{"spcldr",      spcmd5},
-	{"spnews",      spcmd6},
+	{"spcldr",      spcmd4},
+	{"spnews",      spcmd5},
 };
 
 /* tagging */
@@ -86,14 +84,13 @@ static const Rule rules[] = {
 	 */
 	/* class              instance     title           tags mask     isfloating  isterminal  noswallow  monitor */
 	{ "steam",            NULL,        NULL,           0,            1,          0,           1,        -1 },
-	{ "Firefox",          NULL,        NULL,           1 << 8,       0,          0,           0,        -1 },
+	{ "firefox",          NULL,        NULL,           1 << 8,       0,          0,           0,        -1 },
 	{ "st-256color",      NULL,        NULL,           0,            0,          1,           0,        -1 },
 	{ NULL,		            "spterm",		 NULL,		       SPTAG(0),		 1,    			 0,           1,        -1 },
 	{ NULL,		            "spmix",		 NULL,		       SPTAG(1),		 1,			     0,           1,        -1 },
 	{ NULL,		            "spmus",     NULL,		       SPTAG(2),		 1,			     0,           1,        -1 },
-	{ NULL,		            "spfm",      NULL,		       SPTAG(3),		 0,			     0,           1,        -1 },
-	{ NULL,		            "spcldr",    NULL,		       SPTAG(4),		 0,			     0,           1,        -1 },
-	{ NULL,		            "spnews",    NULL,		       SPTAG(5),		 1,			     0,           1,        -1 },
+	{ NULL,		            "spcldr",    NULL,		       SPTAG(3),		 1,			     0,           1,        -1 },
+	{ NULL,		            "spnews",    NULL,		       SPTAG(4),		 1,			     0,           1,        -1 },
 	{ NULL,               NULL,        "Event Tester", 0,            0,          0,           1,        -1 }, /* xev */
 };
 
@@ -132,6 +129,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-p", "run:", NULL };
 static const char *dmenupcmd[] = { "dmenu_prun", NULL };
 static const char *passmenucmd[]  = { "passmenu", NULL };
 static const char *dmtunecmd[]  = { "dmtune", NULL };
+static const char *fmcmd[]  = { "st", "-e", "nnn", NULL };
 static const char *brightnesscmd[2][4] = {
 	{ "xbacklight", "-inc", "10%", NULL },
 	{ "xbacklight", "-dec", "10%", NULL },
@@ -215,11 +213,11 @@ static const Key keys[] = {
 	{ MODKEY,            			      XK_grave,                 togglescratch,  {.ui = 0 } },
 	{ MODKEY|ShiftMask,  			      XK_a,	                    togglescratch,  {.ui = 1 } },
 	{ MODKEY|ShiftMask,  			      XK_m,	                    togglescratch,  {.ui = 2 } },
-	{ MODKEY|ShiftMask,  			      XK_n,	                    togglescratch,  {.ui = 3 } },
-	{ MODKEY|ShiftMask,  			      XK_c,	                    togglescratch,  {.ui = 4 } },
-	{ MODKEY|ShiftMask,  			      XK_b,	                    togglescratch,  {.ui = 5 } },
+	{ MODKEY|ShiftMask,  			      XK_c,	                    togglescratch,  {.ui = 3 } },
+	{ MODKEY|ShiftMask,  			      XK_b,	                    togglescratch,  {.ui = 4 } },
 
 	/* program binds */
+	{ MODKEY|ShiftMask,             XK_n,											spawn,          {.v = fmcmd } },
 	{ MODKEY,                       XK_p,											spawn,          {.v = passmenucmd } },
 	{ MODKEY|ShiftMask,             XK_t,											spawn,          {.v = dmtunecmd } },
 	{ MODKEY,                       XK_Print,       					spawn,          {.v = flameshotcmd[0]} },
