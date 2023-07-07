@@ -16,7 +16,7 @@ static const int vertpad            = 0;        /* vertical padding of bar */
 static const int sidepad            = 0;        /* horizontal padding of bar */
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=12" };
 static const char fg[]              = "#CDD6F4";
-static const char bg[]              = "#1E1E2E";
+static const char bg[]              = "#181825";
 static const char fg_sel[]          = "#CDD6F4";
 static const char bg_sel[]          = "#303446";
 static const char border[]          = "#1E1E2E";
@@ -113,7 +113,7 @@ static const Layout layouts[] = {
 #define WFDEFAULT WFACTIVE
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -139,10 +139,10 @@ static const char *volumecmd[3][5] = {
 	{ "wpctl", "set-volume", "@DEFAULT_SINK@", "0.05-", NULL },
 	{ "wpctl", "set-mute", "@DEFAULT_SINK@", "toggle", NULL },
 };
-static const char *cmuscmd[3][3] = {
-	{ "cmus-remote", "--pause", NULL },
-	{ "cmus-remote", "--next", NULL },
-	{ "cmus-remote", "--prev", NULL },
+static const char *playerctlcmd[3][3] = {
+	{ "playerctl", "play-pause", NULL },
+	{ "playerctl", "next", NULL },
+	{ "playerctl", "previous", NULL },
 };
 static const char *flameshotcmd[2][3] = {
 	{ "flameshot", "gui", NULL },
@@ -159,9 +159,9 @@ static const Key keys[] = {
 	{0,                             XF86XK_AudioRaiseVolume,  spawn,          {.v = volumecmd[0]} },
   {0,                             XF86XK_AudioLowerVolume,  spawn,          {.v = volumecmd[1]} },
   {0,                             XF86XK_AudioMute,         spawn,          {.v = volumecmd[2]} },
-	{0,                             XF86XK_AudioPlay,         spawn,          {.v = cmuscmd[0]} },
-  {0,                             XF86XK_AudioNext,         spawn,          {.v = cmuscmd[1]} },
-  {0,                             XF86XK_AudioPrev,         spawn,          {.v = cmuscmd[2]} },
+	{0,                             XF86XK_AudioPlay,         spawn,          {.v = playerctlcmd[0]} },
+  {0,                             XF86XK_AudioNext,         spawn,          {.v = playerctlcmd[1]} },
+  {0,                             XF86XK_AudioPrev,         spawn,          {.v = playerctlcmd[2]} },
 	{ MODKEY,                       XK_b,                     togglebar,      {0} },
 	{ MODKEY,                       XK_n,                     togglefollow,   {0} },
 	{ MODKEY,                       XK_j,                     focusstack,     {.i = +1 } },
