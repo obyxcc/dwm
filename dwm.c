@@ -578,18 +578,19 @@ buttonpress(XEvent *e)
 	if (ev->window == selmon->barwin) {
 		i = x = 0;
 		do
+		  if (showtags)
 			x += TEXTW(tags[i]);
 		while (ev->x >= x && ++i < LENGTH(tags));
-		if (i < LENGTH(tags)) {
+		if (i < LENGTH(tags) && showtags) {
 			click = ClkTagBar;
 			arg.ui = 1 << i;
-		} else if (ev->x < (x = (x + TEXTW(selmon->ltsymbol))))
+		} else if (ev->x < x + TEXTW(selmon->ltsymbol) && showlayout)
 			click = ClkLtSymbol;
 		else if (ev->x < x + TEXTW(selmon->wfsymbol))
 			click = ClkFollowSymbol;
-		else if (ev->x > selmon->ww - (int)TEXTW(stext))
+		else if (ev->x > selmon->ww - (int)TEXTW(stext) && showstatus)
 			click = ClkStatusText;
-		else
+		else if (showtitle)
 			click = ClkWinTitle;
 	} else if ((c = wintoclient(ev->window))) {
 		focus(c);
@@ -985,39 +986,46 @@ drawbar(Monitor *m)
 		return;
 
 	/* draw status first so it can be overdrawn by tags later */
-	if (m == selmon || 1) { /* status is only drawn on selected monitor */
+	if ((m == selmon  || 1) && showstatus) { /* status is only drawn on selected monitor */
 		tw = m->ww - drawstatusbar(m, bh, stext);
 	}
 
 	for (c = m->clients; c; c = c->next) {
 		occ |= c->tags;
-		if (c->isurgent)
+		if (c->isurgent && showtags)
 			urg |= c->tags;
 	}
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
-		w = TEXTW(tags[i]);
-		wdelta = selmon->alttag ? abs(TEXTW(tags[i]) - TEXTW(tagsalt[i])) / 2 : 0;
-		drw_setscheme(drw, (m->tagset[m->seltags] & 1 << i ? tagscheme[i] : scheme[SchemeNorm]));
-		drw_text(drw, x, 0, w, bh, wdelta + lrpad / 2, (selmon->alttag ? tagsalt[i] : tags[i]), urg & 1 << i);
-		if (occ & 1 << i)
-			drw_rect(drw, x + boxs, boxs, boxw, boxw,
-				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
-				urg & 1 << i);
-		x += w;
+    if (showtags) {
+      w = TEXTW(tags[i]);
+      wdelta = selmon->alttag ? abs(TEXTW(tags[i]) - TEXTW(tagsalt[i])) / 2 : 0;
+      drw_setscheme(drw, (m->tagset[m->seltags] & 1 << i ? tagscheme[i] : scheme[SchemeNorm]));
+      drw_text(drw, x, 0, w, bh, wdelta + lrpad / 2, (selmon->alttag ? tagsalt[i] : tags[i]), urg & 1 << i);
+      if (occ & 1 << i)
+        drw_rect(drw, x + boxs, boxs, boxw, boxw,
+          m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
+          urg & 1 << i);
+      x += w;
+    }
 	}
-	w = TEXTW(m->ltsymbol);
-	drw_setscheme(drw, scheme[SchemeTagsNorm]);
-	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+  if (showlayout) {
+    w = TEXTW(m->ltsymbol);
+    drw_setscheme(drw, scheme[SchemeTagsNorm]);
+    x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+  }
 
-	w = TEXTW(m->wfsymbol);
-	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->wfsymbol, 0);
+  //FIXME include with toggle
+  if (showwfsymbol) {
+    w = TEXTW(m->wfsymbol);
+    x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->wfsymbol, 0);
+  }
 
 	if ((w = m->ww - tw - x) > bh) {
-		if (m->sel) {
+		if (m->sel && showtitle) {
 			drw_setscheme(drw, scheme[m == selmon ? SchemeInfoSel : SchemeInfoNorm]);
 			drw_text(drw, x, 0, w - 2 * sp, bh, lrpad / 2, m->sel->name, 0);
-			if (m->sel->isfloating)
+			if (m->sel->isfloating && showfloating)
 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
 		} else {
 			drw_setscheme(drw, scheme[SchemeInfoNorm]);
@@ -1665,7 +1673,7 @@ propertynotify(XEvent *e)
 		}
 		if (ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName]) {
 			updatetitle(c);
-			if (c == c->mon->sel)
+			if (c == c->mon->sel && showtitle)
 				drawbar(c->mon);
 		}
 		if (ev->atom == netatom[NetWMWindowType])
@@ -2673,7 +2681,7 @@ void
 updatestatus(void)
 {
 	Monitor* m;
-	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
+	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)) && showstatus)
 		strcpy(stext, "dwm-"VERSION);
 	for(m = mons; m; m = m->next)
 		drawbar(m);
