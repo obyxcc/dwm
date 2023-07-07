@@ -61,8 +61,8 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "󰖟", "", "", "󰙯", "", "󰎈", "󰕝", "", "" };
-static const char *tagsalt[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tagsalt[] = { "󰖟", "", "", "󰙯", "", "󰎈", "󰕝", "", "" };
 static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
 
 static const char *tagsel[][2] = {
@@ -113,7 +113,7 @@ static const Layout layouts[] = {
 #define WFDEFAULT WFACTIVE
 
 /* key definitions */
-#define MODKEY Mod4Mask
+#define MODKEY Mod1Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -170,8 +170,8 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_k,                     movestack,      {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_j,                     rotatestack,    {.i = +1 } },
 	{ MODKEY|ControlMask,           XK_k,                     rotatestack,    {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_equal,                 incnmaster,     {.i = +1 } },
-	{ MODKEY|ControlMask,           XK_minus,                 incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_Insert,                incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_Delete,                incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_comma,                 setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_period,                setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_Return,                zoom,           {0} },
