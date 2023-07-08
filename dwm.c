@@ -1015,7 +1015,6 @@ drawbar(Monitor *m)
     x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
   }
 
-  //FIXME include with toggle
   if (showwfsymbol) {
     w = TEXTW(m->wfsymbol);
     x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->wfsymbol, 0);
