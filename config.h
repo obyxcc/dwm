@@ -27,6 +27,8 @@ static const char fg_sel[]          = "#CDD6F4";
 static const char bg_sel[]          = "#303446";
 static const char border[]          = "#1E1E2E";
 static const char border_sel[]      = "#CDD6F4";
+static const char col_red[]         = "#F38BA8";
+static const char col_orange[]      = "#FAB387";
 static const char *colors[][3]      = {
 	/*                   fg         bg         border   */
 	[SchemeNorm]     = { fg,        bg,        border },
@@ -35,6 +37,8 @@ static const char *colors[][3]      = {
 	[SchemeTagsNorm] = { fg,        bg,        border }, // Tagbar left unselected {text,background,not used but cannot be empty}
 	[SchemeInfoSel]  = { fg,        bg,        border }, // infobar middle  selected {text,background,not used but cannot be empty}
 	[SchemeInfoNorm] = { fg,        bg,        border }, // infobar middle  unselected {text,background,not used but cannot be empty}
+	[SchemeScratchSel]  = { bg_sel, fg,  col_red  },
+	[SchemeScratchNorm] = { bg_sel, fg,  col_orange },
 };
 
 /* autostart applications */
@@ -44,25 +48,6 @@ static const char *const autostart[] = {
 	"xwallpaper", "--daemon", "--zoom", "/home/cole/.config/wall", NULL,
 	"dwmblocks", NULL,
 	NULL /* terminate */
-};
-
-/* scratchpads */
-typedef struct {
-	const char *name;
-	const void *cmd;
-} Sp;
-const char *spcmd1[] = {"st", "-n", "spterm", "-g", "144x41", NULL };
-const char *spcmd2[] = {"st", "-n", "spmix", "-g", "144x41", "-e", "pulsemixer", NULL };
-const char *spcmd3[] = {"st", "-n", "spmus", "-g", "144x41", "-e", "cmus", NULL };
-const char *spcmd4[] = {"st", "-n", "spcldr", "-g", "144x41", "-e", "calcurse", NULL };
-const char *spcmd5[] = {"st", "-n", "spnews", "-g", "144x41", "-e", "newsboat", NULL };
-static Sp scratchpads[] = {
-	/* name          cmd  */
-	{"spterm",      spcmd1},
-	{"spmix",       spcmd2},
-	{"spmus",       spcmd3},
-	{"spcldr",      spcmd4},
-	{"spnews",      spcmd5},
 };
 
 /* tagging */
@@ -87,16 +72,17 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class              instance     title           tags mask     isfloating  isterminal  noswallow  monitor */
-	{ "steam",            NULL,        NULL,           0,            1,          0,          1,         -1 },
-	{ "flameshot",        NULL,        NULL,           0,            1,          0,          1,         -1 },
-	{ "st-256color",      NULL,        NULL,           0,            0,          1,          0,         -1 },
-	{ NULL,		            "spterm",		 NULL,		       SPTAG(0),		 1,    			 0,          1,         -1 },
-	{ NULL,		            "spmix",		 NULL,		       SPTAG(1),		 1,			     0,          1,         -1 },
-	{ NULL,		            "spmus",     NULL,		       SPTAG(2),		 1,			     0,          1,         -1 },
-	{ NULL,		            "spcldr",    NULL,		       SPTAG(3),		 1,			     0,          1,         -1 },
-	{ NULL,		            "spnews",    NULL,		       SPTAG(4),		 1,			     0,          1,         -1 },
-	{ NULL,               NULL,        "Event Tester", 0,            0,          0,          1,         -1 }, /* xev */
+	/* class              instance    title           tags mask     isfloating  isterminal  noswallow  monitor   scratch key */
+	{ "steam",            NULL,       NULL,           0,            1,          0,          1,         -1,       0 },
+	{ "flameshot",        NULL,       NULL,           0,            1,          0,          1,         -1,       0 },
+	{ "solaar",           NULL,       NULL,           0,            1,          0,          1,         -1,       0 },
+	{ "st-256color",      NULL,       NULL,           0,            0,          1,          0,         -1,       0 },
+	{ NULL,               NULL,       "spterm",       0,            1,          0,          1,         -1,       's' },
+	{ NULL,               NULL,       "spmix",        0,            1,          0,          1,         -1,       'a' },
+	{ NULL,               NULL,       "spmus",        0,            1,          0,          1,         -1,       'm' },
+	{ NULL,               NULL,       "spcldr",       0,            1,          0,          1,         -1,       'c' },
+	{ NULL,               NULL,       "sprss",        0,            1,          0,          1,         -1,       'r' },
+	{ NULL,               NULL,       "Event Tester", 0,            0,          0,          1,         -1,       0 }, /* xev */
 };
 
 /* layout(s) */
@@ -129,6 +115,14 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 #define STATUSBAR "dwmblocks"
+
+/* scratchpads */
+/*First arg only serves to match against key in rules*/
+static const char *sptermcmd[] = {"s", "st", "-t", "spterm", "-g 144x41", NULL};
+static const char *spmixcmd[] = {"a", "st", "-t", "spmix", "-g 144x41", "-e", "pulsemixer", NULL};
+static const char *spmuscmd[] = {"m", "st", "-t", "spmus", "-g 144x41", "-e", "cmus", NULL};
+static const char *spcldrcmd[] = {"c", "st", "-t", "spcldr", "-g 144x41", "-e", "calcurse", NULL};
+static const char *sprsscmd[] = {"r", "st", "-t", "sprss", "-g 144x41", "-e", "newsboat", NULL};
 
 /* commands */
 static const char *termcmd[]  = { "st", NULL };
@@ -213,12 +207,14 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Escape,								quit,           {0} },
 	{ MODKEY|ControlMask|ShiftMask, XK_Escape,								quit,           {1} },
 
-	/* scratchpad binds */
-	{ MODKEY,            			      XK_grave,                 togglescratch,  {.ui = 0 } },
-	{ MODKEY|ShiftMask,  			      XK_a,	                    togglescratch,  {.ui = 1 } },
-	{ MODKEY|ShiftMask,  			      XK_m,	                    togglescratch,  {.ui = 2 } },
-	{ MODKEY|ShiftMask,  			      XK_c,	                    togglescratch,  {.ui = 3 } },
-	{ MODKEY|ShiftMask,  			      XK_b,	                    togglescratch,  {.ui = 4 } },
+  /* scratchpad binds */
+	{ MODKEY,                       XK_grave,  togglescratch,  {.v = sptermcmd } },
+	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.v = sptermcmd } },
+	{ MODKEY|ControlMask,           XK_grave,  setscratch,     {.v = sptermcmd } },
+	{ MODKEY|ShiftMask,             XK_a,      togglescratch,  {.v = spmixcmd } },
+	{ MODKEY|ShiftMask,             XK_m,      togglescratch,  {.v = spmuscmd } },
+	{ MODKEY|ShiftMask,             XK_c,      togglescratch,  {.v = spcldrcmd } },
+	{ MODKEY|ShiftMask,             XK_b,      togglescratch,  {.v = sprsscmd } },
 
 	/* program binds */
 	{ MODKEY|ShiftMask,             XK_n,											spawn,          {.v = fmcmd } },

@@ -26,6 +26,8 @@ static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
+static const char col_red[]         = "#FF0000";
+static const char col_orange[]      = "#FF8800";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -34,26 +36,13 @@ static const char *colors[][3]      = {
 	[SchemeTagsNorm]  = { col_gray3, col_gray1,  "#000000"  }, // Tagbar left unselected {text,background,not used but cannot be empty}
 	[SchemeInfoSel]  = { col_gray4, col_cyan,  "#000000"  }, // infobar middle  selected {text,background,not used but cannot be empty}
 	[SchemeInfoNorm]  = { col_gray3, col_gray1,  "#000000"  }, // infobar middle  unselected {text,background,not used but cannot be empty}
+	[SchemeScratchSel]  = { col_gray4, col_cyan,  col_red  },
+	[SchemeScratchNorm] = { col_gray4, col_cyan,  col_orange },
 };
 
 static const char *const autostart[] = {
 	"st", NULL,
 	NULL /* terminate */
-};
-
-/* scratchpads */
-typedef struct {
-	const char *name;
-	const void *cmd;
-} Sp;
-const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
-const char *spcmd3[] = {"keepassxc", NULL };
-static Sp scratchpads[] = {
-	/* name          cmd  */
-	{"spterm",      spcmd1},
-	{"spranger",    spcmd2},
-	{"keepassxc",   spcmd3},
 };
 
 /* tagging */
@@ -78,14 +67,13 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class     instance     title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Gimp",    NULL,        NULL,           0,         1,          0,           0,        -1 },
-	{ "Firefox", NULL,        NULL,           1 << 8,    0,          0,          -1,        -1 },
-	{ "St",      NULL,        NULL,           0,         0,          1,           0,        -1 },
-  { NULL,		   "spterm",    NULL,		        SPTAG(0),	 1,			     0,          -1,        -1 },
-  { NULL,		   "spfm",	    NULL,		        SPTAG(1),	 1,			     0,          -1,        -1 },
-  { NULL,		   "keepassxc", NULL,		        SPTAG(2),	 0,			     0,          -1,        -1 },
-	{ NULL,      NULL,        "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
+	/* class     instance     title           tags mask  isfloating  isterminal  noswallow  monitor   scratch key */
+
+	{ "Gimp",    NULL,        NULL,           0,         1,          0,           0,        -1,       0 },
+	{ "Firefox", NULL,        NULL,           1 << 8,    0,          0,          -1,        -1,       0 },
+	{ "St",      NULL,        NULL,           0,         0,          1,           0,        -1,       0 },
+	{ NULL,      NULL,        "scratchpad",   0,         1,          0,           1,        -1,       's' },
+	{ NULL,      NULL,        "Event Tester", 0,         0,          0,           1,        -1,       0 }, /* xev */
 };
 
 /* layout(s) */
@@ -123,10 +111,16 @@ static const Layout layouts[] = {
 static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
+/*First arg only serves to match against key in rules*/
+static const char *scratchpadcmd[] = {"s", "st", "-t", "scratchpad", NULL};
+
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_g,      togglescratch,  {.v = scratchpadcmd } },
+	{ MODKEY|ShiftMask,             XK_g,      removescratch,  {.v = scratchpadcmd } },
+	{ MODKEY|ControlMask,           XK_g,      setscratch,     {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_n,      togglefollow,   {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -158,9 +152,6 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY|ControlMask,           XK_b,      togglealttag,   {0} },
-	{ MODKEY,            			      XK_y,  	   togglescratch,  {.ui = 0 } },
-	{ MODKEY,            			      XK_u,	     togglescratch,  {.ui = 1 } },
-	{ MODKEY,            			      XK_x,	     togglescratch,  {.ui = 2 } },
 	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
 	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
