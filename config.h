@@ -4,7 +4,7 @@
 
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
-static const unsigned int gappx     = 20;       /* gaps between windows */
+static const unsigned int gappx     = 12;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -40,7 +40,6 @@ static const char *colors[][3]      = {
 /* autostart applications */
 static const char *const autostart[] = {
 	"autorandr", "-c", NULL,
-	"picom", "-b", NULL,
 	"dunst", NULL,
 	"xwallpaper", "--daemon", "--zoom", "/home/cole/.config/wall", NULL,
 	"dwmblocks", NULL,
@@ -89,15 +88,15 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class              instance     title           tags mask     isfloating  isterminal  noswallow  monitor */
-	{ "steam",            NULL,        NULL,           0,            1,          0,           1,        -1 },
-	{ "firefox",          NULL,        NULL,           1 << 8,       0,          0,           0,        -1 },
-	{ "st-256color",      NULL,        NULL,           0,            0,          1,           0,        -1 },
-	{ NULL,		            "spterm",		 NULL,		       SPTAG(0),		 1,    			 0,           1,        -1 },
-	{ NULL,		            "spmix",		 NULL,		       SPTAG(1),		 1,			     0,           1,        -1 },
-	{ NULL,		            "spmus",     NULL,		       SPTAG(2),		 1,			     0,           1,        -1 },
-	{ NULL,		            "spcldr",    NULL,		       SPTAG(3),		 1,			     0,           1,        -1 },
-	{ NULL,		            "spnews",    NULL,		       SPTAG(4),		 1,			     0,           1,        -1 },
-	{ NULL,               NULL,        "Event Tester", 0,            0,          0,           1,        -1 }, /* xev */
+	{ "steam",            NULL,        NULL,           0,            1,          0,          1,         -1 },
+	{ "flameshot",        NULL,        NULL,           0,            1,          0,          1,         -1 },
+	{ "st-256color",      NULL,        NULL,           0,            0,          1,          0,         -1 },
+	{ NULL,		            "spterm",		 NULL,		       SPTAG(0),		 1,    			 0,          1,         -1 },
+	{ NULL,		            "spmix",		 NULL,		       SPTAG(1),		 1,			     0,          1,         -1 },
+	{ NULL,		            "spmus",     NULL,		       SPTAG(2),		 1,			     0,          1,         -1 },
+	{ NULL,		            "spcldr",    NULL,		       SPTAG(3),		 1,			     0,          1,         -1 },
+	{ NULL,		            "spnews",    NULL,		       SPTAG(4),		 1,			     0,          1,         -1 },
+	{ NULL,               NULL,        "Event Tester", 0,            0,          0,          1,         -1 }, /* xev */
 };
 
 /* layout(s) */
@@ -139,8 +138,8 @@ static const char *passmenucmd[]  = { "passmenu", NULL };
 static const char *dmtunecmd[]  = { "dmtune", NULL };
 static const char *fmcmd[]  = { "st", "-e", "nnn", NULL };
 static const char *brightnesscmd[2][4] = {
-	{ "xbacklight", "-inc", "10%", NULL },
-	{ "xbacklight", "-dec", "10%", NULL },
+	{ "brillo", "-A", "10", NULL },
+	{ "brillo", "-U", "10", NULL },
 };
 static const char *volumecmd[3][5] = {
 	{ "wpctl", "set-volume", "@DEFAULT_SINK@", "0.05+", NULL },
@@ -152,10 +151,7 @@ static const char *playerctlcmd[3][3] = {
 	{ "playerctl", "next", NULL },
 	{ "playerctl", "previous", NULL },
 };
-static const char *flameshotcmd[2][3] = {
-	{ "flameshot", "gui", NULL },
-	{ "flameshot", "full", NULL },
-};
+static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key                       function     argument */
@@ -228,8 +224,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_n,											spawn,          {.v = fmcmd } },
 	{ MODKEY,                       XK_p,											spawn,          {.v = passmenucmd } },
 	{ MODKEY|ShiftMask,             XK_t,											spawn,          {.v = dmtunecmd } },
-	{ MODKEY,                       XK_Print,       					spawn,          {.v = flameshotcmd[0]} },
-	{ MODKEY|ShiftMask,             XK_Print,       					spawn,          {.v = flameshotcmd[1]} },
+	{ MODKEY,                       XK_Print,       					spawn,          {.v = flameshotcmd } },
 };
 
 /* button definitions */
