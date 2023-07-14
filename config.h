@@ -8,7 +8,7 @@ static const unsigned int gappx     = 12;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
-static const int showtitle          = 0;        /* 0 means no title */
+static const int showtitle          = 1;        /* 0 means no title */
 static const int showtags           = 1;        /* 0 means no tags */
 static const int showlayout         = 1;        /* 0 means no layout indicator */
 static const int showwfsymbol       = 1;        /* 0 means no window follow symbol */
@@ -17,14 +17,14 @@ static const int showfloating       = 1;        /* 0 means no floating indicator
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 4;        /* 2 is the default spacing around the bar's font */
 static const int horizpadbar        = 0;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 12;       /* vertical padding for statusbar */
+static const int vertpadbar         = 14;       /* vertical padding for statusbar */
 static const int vertpad            = 0;        /* vertical padding of bar */
 static const int sidepad            = 0;        /* horizontal padding of bar */
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=12" };
 static const char fg[]              = "#CDD6F4";
 static const char bg[]              = "#181825";
 static const char fg_sel[]          = "#CDD6F4";
-static const char bg_sel[]          = "#303446";
+static const char bg_sel[]          = "#242437";
 static const char border[]          = "#1E1E2E";
 static const char border_sel[]      = "#CDD6F4";
 static const char col_red[]         = "#F38BA8";
@@ -56,15 +56,15 @@ static const char *tagsalt[] = { "󰖟", "", "", "󰙯", "", "󰎈", "�
 static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
 
 static const char *tagsel[][2] = {
-	{ "#CDD6F4", "#303446" },
-	{ "#CDD6F4", "#303446" },
-	{ "#CDD6F4", "#303446" },
-	{ "#CDD6F4", "#303446" },
-	{ "#CDD6F4", "#303446" },
-	{ "#CDD6F4", "#303446" },
-	{ "#CDD6F4", "#303446" },
-	{ "#CDD6F4", "#303446" },
-	{ "#CDD6F4", "#303446" },
+	{ "#CDD6F4", "#242437" },
+	{ "#CDD6F4", "#242437" },
+	{ "#CDD6F4", "#242437" },
+	{ "#CDD6F4", "#242437" },
+	{ "#CDD6F4", "#242437" },
+	{ "#CDD6F4", "#242437" },
+	{ "#CDD6F4", "#242437" },
+	{ "#CDD6F4", "#242437" },
+	{ "#CDD6F4", "#242437" },
 };
 
 static const Rule rules[] = {
@@ -224,7 +224,7 @@ static const Key keys[] = {
 };
 
 /* button definitions */
-/* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
+/* click can be ClkFollowSymbol, ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
 	/* click                event mask      button          function           argument */
 	{ ClkLtSymbol,          0,              Button1,        setlayout,         {0} },

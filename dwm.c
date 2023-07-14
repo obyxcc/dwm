@@ -591,7 +591,7 @@ buttonpress(XEvent *e)
 			arg.ui = 1 << i;
 		} else if (ev->x < x + TEXTW(selmon->ltsymbol) && showlayout)
 			click = ClkLtSymbol;
-		else if (ev->x < x + TEXTW(selmon->wfsymbol))
+		else if (ev->x < x + TEXTW(selmon->ltsymbol) + TEXTW(selmon->wfsymbol) && showwfsymbol)
 			click = ClkFollowSymbol;
 		else if (ev->x > selmon->ww - statusw && showstatus) {
 			x = selmon->ww - statusw;
@@ -1021,7 +1021,7 @@ drawbar(Monitor *m)
 		return;
 
 	/* draw status first so it can be overdrawn by tags later */
-	if ((m == selmon  || 1) && showstatus) { /* status is only drawn on selected monitor */
+	if ((m == selmon || 1) && showstatus) {
 		tw = statusw = m->ww - drawstatusbar(m, bh, stext);
 	}
 
@@ -1058,12 +1058,12 @@ drawbar(Monitor *m)
 	if ((w = m->ww - tw - x) > bh) {
 		if (m->sel && showtitle) {
 			drw_setscheme(drw, scheme[m == selmon ? SchemeInfoSel : SchemeInfoNorm]);
-			drw_text(drw, x, 0, w - 2 * sp, bh, lrpad / 2, m->sel->name, 0);
+			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
 			if (m->sel->isfloating && showfloating)
 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
 		} else {
 			drw_setscheme(drw, scheme[SchemeInfoNorm]);
-			drw_rect(drw, x, 0, w - 2 * sp, bh, 1, 1);
+			drw_rect(drw, x, 0, w, bh, 1, 1);
 		}
 	}
 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
