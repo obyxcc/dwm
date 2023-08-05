@@ -1,6 +1,5 @@
 /* See LICENSE file for copyright and license details. */
 #include <X11/XF86keysym.h>
-#include "movestack.c"
 
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
@@ -8,7 +7,7 @@ static const unsigned int gappx     = 12;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
-static const int showtitle          = 1;        /* 0 means no title */
+static const int showtitle          = 0;        /* 0 means no title */
 static const int showtags           = 1;        /* 0 means no tags */
 static const int showlayout         = 1;        /* 0 means no layout indicator */
 static const int showwfsymbol       = 1;        /* 0 means no window follow symbol */
@@ -27,18 +26,20 @@ static const char fg_sel[]          = "#CDD6F4";
 static const char bg_sel[]          = "#242437";
 static const char border[]          = "#1E1E2E";
 static const char border_sel[]      = "#CDD6F4";
-static const char col_red[]         = "#F38BA8";
-static const char col_orange[]      = "#FAB387";
+// static const char col_red[]         = "#F38BA8";
+// static const char col_orange[]      = "#FAB387";
 static const char *colors[][3]      = {
-	/*                   fg         bg         border   */
-	[SchemeNorm]     = { fg,        bg,        border },
-	[SchemeSel]      = { fg_sel, 	  bg_sel,    border_sel },
-	[SchemeStatus]   = { fg,        bg,        border }, // Statusbar right {text,background,not used but cannot be empty}
-	[SchemeTagsNorm] = { fg,        bg,        border }, // Tagbar left unselected {text,background,not used but cannot be empty}
-	[SchemeInfoSel]  = { fg,        bg,        border }, // infobar middle  selected {text,background,not used but cannot be empty}
-	[SchemeInfoNorm] = { fg,        bg,        border }, // infobar middle  unselected {text,background,not used but cannot be empty}
-	[SchemeScratchSel]  = { bg_sel, fg,  col_red  },
-	[SchemeScratchNorm] = { bg_sel, fg,  col_orange },
+	/*                      fg         bg         border   */
+	[SchemeNorm]        = { fg,        bg,        border },
+	[SchemeSel]         = { fg_sel, 	 bg_sel,    border_sel },
+	[SchemeStatus]      = { fg,        bg,        border }, // Statusbar right {text,background,not used but cannot be empty}
+	[SchemeTagsNorm]    = { fg,        bg,        border }, // Tagbar left unselected {text,background,not used but cannot be empty}
+	[SchemeInfoSel]     = { fg,        bg,        border }, // infobar middle  selected {text,background,not used but cannot be empty}
+	[SchemeInfoNorm]    = { fg,        bg,        border }, // infobar middle  unselected {text,background,not used but cannot be empty}
+	// [SchemeScratchSel]  = { bg_sel,    fg,        col_red  },
+	// [SchemeScratchNorm] = { bg_sel,    fg,        col_orange },
+	[SchemeScratchSel]  = { bg_sel,    fg,        border_sel  },
+	[SchemeScratchNorm] = { bg_sel,    fg,        border },
 };
 
 /* autostart applications */
@@ -76,6 +77,7 @@ static const Rule rules[] = {
 	{ "steam",            NULL,       NULL,           0,            1,          0,          1,         -1,       0 },
 	{ "flameshot",        NULL,       NULL,           0,            1,          0,          1,         -1,       0 },
 	{ "solaar",           NULL,       NULL,           0,            1,          0,          1,         -1,       0 },
+	{ "Msgcompose",       NULL,       NULL,           0,            1,          0,          1,         -1,       0 },
 	{ "st-256color",      NULL,       NULL,           0,            0,          1,          0,         -1,       0 },
 	{ NULL,               NULL,       "spterm",       0,            1,          0,          1,         -1,       's' },
 	{ NULL,               NULL,       "spmix",        0,            1,          0,          1,         -1,       'a' },
@@ -164,8 +166,6 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_n,                     togglefollow,   {0} },
 	{ MODKEY,                       XK_j,                     focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,                     focusstack,     {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_j,                     movestack,      {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_k,                     movestack,      {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_j,                     rotatestack,    {.i = +1 } },
 	{ MODKEY|ControlMask,           XK_k,                     rotatestack,    {.i = -1 } },
 	{ MODKEY,                       XK_Insert,                incnmaster,     {.i = +1 } },
@@ -193,7 +193,7 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_b,                     togglealttag,   {0} },
 	{ MODKEY,                       XK_minus,									setgaps,        {.i = -4 } },
 	{ MODKEY,                       XK_equal,									setgaps,        {.i = +4 } },
-	{ MODKEY|ShiftMask|ControlMask, XK_equal,									setgaps,        {.i = 0 } },
+	{ MODKEY|ShiftMask,             XK_minus,									setgaps,        {.i = 0 } },
   { MODKEY|ShiftMask,             XK_equal,									setgaps,        {.i = gappx } },
 	TAGKEYS(                        XK_1,											 							  0)
 	TAGKEYS(                        XK_2,											 							  1)
