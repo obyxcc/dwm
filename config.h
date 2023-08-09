@@ -84,6 +84,7 @@ static const Rule rules[] = {
 	{ NULL,               NULL,       "spmus",        0,            1,          0,          1,         -1,       'm' },
 	{ NULL,               NULL,       "spcldr",       0,            1,          0,          1,         -1,       'c' },
 	{ NULL,               NULL,       "sprss",        0,            1,          0,          1,         -1,       'r' },
+	{ NULL,               NULL,       "sptop",        0,            1,          0,          1,         -1,       'p' },
 	{ NULL,               NULL,       "Event Tester", 0,            0,          0,          1,         -1,       0 }, /* xev */
 };
 
@@ -120,11 +121,12 @@ static const Layout layouts[] = {
 
 /* scratchpads */
 /*First arg only serves to match against key in rules*/
-static const char *sptermcmd[] = {"s", "st", "-t", "spterm", "-g 144x41", NULL};
-static const char *spmixcmd[] = {"a", "st", "-t", "spmix", "-g 144x41", "-e", "pulsemixer", NULL};
-static const char *spmuscmd[] = {"m", "st", "-t", "spmus", "-g 144x41", "-e", "cmus", NULL};
-static const char *spcldrcmd[] = {"c", "st", "-t", "spcldr", "-g 144x41", "-e", "calcurse", NULL};
-static const char *sprsscmd[] = {"r", "st", "-t", "sprss", "-g 144x41", "-e", "newsboat", NULL};
+static const char *sptermcmd[] = {"s", "st", "-t", "spterm", "-g", "144x41", NULL};
+static const char *sptopcmd[] = {"p", "st", "-t", "sptop", "-g", "144x41", "-e", "htop", NULL};
+static const char *spmixcmd[] = {"a", "st", "-t", "spmix", "-g", "144x41", "-e", "pulsemixer", NULL};
+static const char *spmuscmd[] = {"m", "st", "-t", "spmus", "-g", "144x41", "-e", "cmus", NULL};
+static const char *spcldrcmd[] = {"c", "st", "-t", "spcldr", "-g", "144x41", "-e", "calcurse", NULL};
+static const char *sprsscmd[] = {"r", "st", "-t", "sprss", "-g", "144x41", "-e", "newsboat", NULL};
 
 /* commands */
 static const char *termcmd[]  = { "st", NULL };
@@ -215,6 +217,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_m,      togglescratch,  {.v = spmuscmd } },
 	{ MODKEY|ShiftMask,             XK_c,      togglescratch,  {.v = spcldrcmd } },
 	{ MODKEY|ShiftMask,             XK_b,      togglescratch,  {.v = sprsscmd } },
+	{ MODKEY|ShiftMask,             XK_p,      togglescratch,  {.v = sptopcmd } },
 
 	/* program binds */
 	{ MODKEY|ShiftMask,             XK_n,											spawn,          {.v = fmcmd } },
