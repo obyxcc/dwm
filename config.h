@@ -2,7 +2,7 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 4;        /* border pixel of windows */
 static const unsigned int gappx     = 12;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -15,15 +15,15 @@ static const int showstatus         = 1;        /* 0 means no status bar */
 static const int showfloating       = 1;        /* 0 means no floating indicator */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 4;        /* 2 is the default spacing around the bar's font */
-static const int horizpadbar        = 0;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 14;       /* vertical padding for statusbar */
+static const int horizpadbar        = 12;        /* horizontal padding for statusbar */
+static const int vertpadbar         = 12;       /* vertical padding for statusbar */
 static const int vertpad            = 0;        /* vertical padding of bar */
 static const int sidepad            = 0;        /* horizontal padding of bar */
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=12" };
 static const char fg[]              = "#CDD6F4";
 static const char bg[]              = "#181825";
 static const char fg_sel[]          = "#CDD6F4";
-static const char bg_sel[]          = "#242437";
+static const char bg_sel[]          = "#313244";
 static const char border[]          = "#1E1E2E";
 static const char border_sel[]      = "#CDD6F4";
 // static const char col_red[]         = "#F38BA8";
@@ -34,7 +34,7 @@ static const char *colors[][3]      = {
 	[SchemeSel]         = { fg_sel, 	 bg_sel,    border_sel },
 	[SchemeStatus]      = { fg,        bg,        border }, // Statusbar right {text,background,not used but cannot be empty}
 	[SchemeTagsNorm]    = { fg,        bg,        border }, // Tagbar left unselected {text,background,not used but cannot be empty}
-	[SchemeInfoSel]     = { fg,        bg,        border }, // infobar middle  selected {text,background,not used but cannot be empty}
+	[SchemeInfoSel]     = { fg,        bg_sel,        border }, // infobar middle  selected {text,background,not used but cannot be empty}
 	[SchemeInfoNorm]    = { fg,        bg,        border }, // infobar middle  unselected {text,background,not used but cannot be empty}
 	// [SchemeScratchSel]  = { bg_sel,    fg,        col_red  },
 	// [SchemeScratchNorm] = { bg_sel,    fg,        col_orange },
@@ -57,15 +57,15 @@ static const char *tagsalt[] = { "󰖟", "", "", "󰙯", "", "󰎈", "�
 static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
 
 static const char *tagsel[][2] = {
-	{ "#CDD6F4", "#242437" },
-	{ "#CDD6F4", "#242437" },
-	{ "#CDD6F4", "#242437" },
-	{ "#CDD6F4", "#242437" },
-	{ "#CDD6F4", "#242437" },
-	{ "#CDD6F4", "#242437" },
-	{ "#CDD6F4", "#242437" },
-	{ "#CDD6F4", "#242437" },
-	{ "#CDD6F4", "#242437" },
+	{ "#CDD6F4", "#313244" },
+	{ "#CDD6F4", "#313244" },
+	{ "#CDD6F4", "#313244" },
+	{ "#CDD6F4", "#313244" },
+	{ "#CDD6F4", "#313244" },
+	{ "#CDD6F4", "#313244" },
+	{ "#CDD6F4", "#313244" },
+	{ "#CDD6F4", "#313244" },
+	{ "#CDD6F4", "#313244" },
 };
 
 static const Rule rules[] = {

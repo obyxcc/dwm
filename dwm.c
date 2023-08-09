@@ -938,7 +938,7 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
 		isCode = 0;
 	text = p;
 
-  w += lrpad; /* add padding */
+  w += horizpadbar + lrpad / 2; /* add padding */
 	ret = x = m->ww - w;
 
 	drw_setscheme(drw, scheme[LENGTH(colors)]);
@@ -2142,7 +2142,7 @@ setup(void)
 	drw = drw_create(dpy, screen, root, sw, sh);
 	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
 		die("no fonts could be loaded.");
-	lrpad = drw->fonts->h + horizpadbar;
+	lrpad = drw->fonts->h;
 	bh = drw->fonts->h + vertpadbar + user_bh;
 	sp = sidepad;
 	vp = (topbar == 1) ? vertpad : - vertpad;
