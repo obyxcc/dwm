@@ -650,7 +650,7 @@ buttonpress(XEvent *e)
 		else if (ev->x < x + TEXTW(selmon->ltsymbol) + TEXTW(selmon->wfsymbol) && showwfsymbol)
 			click = ClkFollowSymbol;
 		else if (ev->x > selmon->ww - statusw - getsystraywidth() && showstatus) {
-			x = selmon->ww - statusw;
+      x = selmon->ww - statusw - getsystraywidth();
 			click = ClkStatusText;
 			char *text, *s, ch;
 			statussig = 0;
