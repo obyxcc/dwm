@@ -30,18 +30,14 @@ static const char fg_sel[]          = "#CDD6F4";
 static const char bg_sel[]          = "#313244";
 static const char border[]          = "#1E1E2E";
 static const char border_sel[]      = "#CDD6F4";
-// static const char col_red[]         = "#F38BA8";
-// static const char col_orange[]      = "#FAB387";
 static const char *colors[][3]      = {
 	/*                      fg         bg         border   */
 	[SchemeNorm]        = { fg,        bg,        border },
 	[SchemeSel]         = { fg_sel, 	 bg_sel,    border_sel },
 	[SchemeStatus]      = { fg,        bg,        border }, // Statusbar right {text,background,not used but cannot be empty}
 	[SchemeTagsNorm]    = { fg,        bg,        border }, // Tagbar left unselected {text,background,not used but cannot be empty}
-	[SchemeInfoSel]     = { fg,        bg_sel,        border }, // infobar middle  selected {text,background,not used but cannot be empty}
+	[SchemeInfoSel]     = { fg,        bg_sel,    border }, // infobar middle  selected {text,background,not used but cannot be empty}
 	[SchemeInfoNorm]    = { fg,        bg,        border }, // infobar middle  unselected {text,background,not used but cannot be empty}
-	// [SchemeScratchSel]  = { bg_sel,    fg,        col_red  },
-	// [SchemeScratchNorm] = { bg_sel,    fg,        col_orange },
 	[SchemeScratchSel]  = { bg_sel,    fg,        border_sel  },
 	[SchemeScratchNorm] = { bg_sel,    fg,        border },
 };
