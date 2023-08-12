@@ -49,6 +49,7 @@ static const char *const autostart[] = {
 	"dunst", NULL,
 	"xwallpaper", "--daemon", "--zoom", "/home/cole/.config/wall", NULL,
 	"dwmblocks", NULL,
+	"solaar", "-w", "hide", NULL,
 	NULL /* terminate */
 };
 
@@ -178,6 +179,7 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_comma,                 setcfact,       {.f = -0.20} },
 	{ MODKEY|ControlMask,           XK_period,                setcfact,       {.f = +0.20} },
 	{ MODKEY|ControlMask,           XK_o,                     setcfact,       {.f =  0.00} },
+	{ MODKEY,                       XK_r,                     reorganizetags, {0} },
 	{ MODKEY|ShiftMask,             XK_Return,                zoom,           {0} },
 	{ MODKEY,                       XK_Tab,                   view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,                     killclient,     {0} },
