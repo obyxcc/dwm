@@ -198,6 +198,7 @@ static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
 static Monitor *createmon(void);
+static void distributetags(const Arg *arg);
 static void destroynotify(XEvent *e);
 static void detach(Client *c);
 static void detachstack(Client *c);
@@ -957,6 +958,19 @@ createmon(void)
 	}
 
 	return m;
+}
+
+void
+distributetags(const Arg *arg)
+{
+        unsigned int ui = 1;
+        int i = 0;
+        for (Client *c = selmon->clients; c; c = c->next) {
+                c->tags = (ui << i) & TAGMASK;
+                i = (i + 1) % LENGTH(tags);
+        }
+        focus(NULL);
+        arrange(selmon);
 }
 
 void
