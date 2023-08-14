@@ -8,15 +8,15 @@ static const unsigned int snap      = 5;        /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayspacing = 12;   /* systray spacing */
-static const unsigned int systrayiconsize = 20; /* systray icon size in px */
+static const unsigned int systrayiconsize = 16; /* systray icon size in px */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
-static const int showtitle          = 0;        /* 0 means no title */
-static const int showbutton         = 1;        /* 0 means no title */
+static const int showbutton         = 0;        /* 0 means no title */
 static const int showtags           = 1;        /* 0 means no tags */
 static const int showlayout         = 1;        /* 0 means no layout indicator */
 static const int showwfsymbol       = 1;        /* 0 means no window follow symbol */
+static const int showtitle          = 0;        /* 0 means no title */
 static const int showstatus         = 1;        /* 0 means no status bar */
 static const int showfloating       = 1;        /* 0 means no floating indicator */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -34,17 +34,20 @@ static const char border[]          = "#1E1E2E";
 static const char border_sel[]      = "#CDD6F4";
 static const char button_fg[]       = "#89b4fa";
 static const char button_bg[]       = "#242437";
+static const char layout_fg[]       = "#cba6f7";
 static const char *colors[][3]      = {
 	/*                      fg         bg         border   */
 	[SchemeNorm]        = { fg,        bg,        border },
 	[SchemeSel]         = { fg_sel, 	 bg_sel,    border_sel },
-	[SchemeStatus]      = { fg,        bg,        border }, // Statusbar right {text,background,not used but cannot be empty}
+	[SchemeButtonBar]   = { button_fg, button_bg, border },
 	[SchemeTagsNorm]    = { fg,        bg,        border }, // Tagbar left unselected {text,background,not used but cannot be empty}
-	[SchemeInfoSel]     = { fg,        bg,        border }, // infobar middle  selected {text,background,not used but cannot be empty}
+	[SchemeLayout]      = { layout_fg, button_bg, border },
+	[SchemeWF]          = { fg,        bg,        border },
+	[SchemeInfoSel]     = { fg,        bg_sel,    border }, // infobar middle  selected {text,background,not used but cannot be empty}
 	[SchemeInfoNorm]    = { fg,        bg,        border }, // infobar middle  unselected {text,background,not used but cannot be empty}
+	[SchemeStatus]      = { fg,        bg,        border }, // Statusbar right {text,background,not used but cannot be empty}
 	[SchemeScratchSel]  = { bg_sel,    fg,        border_sel  },
 	[SchemeScratchNorm] = { bg_sel,    fg,        border },
-	[SchemeButtonBar]   = { button_fg, button_bg, border },
 };
 
 /* autostart applications */
@@ -60,7 +63,7 @@ static const char *const autostart[] = {
 /* tagging */
 static const char buttonbar[] = " ";
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-static const char *tagsalt[] = { "󰖟", "", "", "󰙯", "", "󰎈", "󰕝", "", "" };
+static const char *tagsalt[] = { "󰖟 ", " ", " ", "󰙯 ", " ", "󰎈 ", "󰕝 ", " ", " " };
 static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
 
 static const char *tagsel[][2] = {
@@ -102,9 +105,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "󰕰",      tile },    /* first entry is default */
-	{ "",      NULL },    /* no layout function means floating behavior */
-	{ "",      monocle },
+	{ "󰕮 ",      tile },    /* first entry is default */
+	{ "󱂬 ",      NULL },    /* no layout function means floating behavior */
+	{ "󰖯 ",      monocle },
 };
 
 /* window following */
@@ -136,11 +139,11 @@ static const char *sprsscmd[] = {"r", "st", "-t", "sprss", "-g", "144x41", "-e",
 
 /* commands */
 static const char *termcmd[]  = { "st", NULL };
-static const char *dmenucmd[] = { "dmenu_run", "-p", "run:", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-c", "-p", "󰍉 Run:", NULL };
 static const char *dmenupcmd[] = { "dmenu_prun", NULL };
 static const char *passmenucmd[]  = { "passmenu", NULL };
-static const char *dmtunecmd[]  = { "dmtune", NULL };
 static const char *fmcmd[]  = { "st", "-e", "nnn", NULL };
+static const char *buttoncmd[] = { "dmenu_run", "-p", "󰍉 Run:", "-z", "400px", "-x", "6px", "-y", "44px", NULL };
 static const char *brightnesscmd[2][4] = {
 	{ "brillo", "-A", "10", NULL },
 	{ "brillo", "-U", "10", NULL },
@@ -233,7 +236,6 @@ static const Key keys[] = {
 	/* program binds */
 	{ MODKEY|ShiftMask,             XK_n,											spawn,          {.v = fmcmd } },
 	{ MODKEY,                       XK_p,											spawn,          {.v = passmenucmd } },
-	{ MODKEY|ShiftMask,             XK_t,											spawn,          {.v = dmtunecmd } },
 	{ MODKEY,                       XK_Print,       					spawn,          {.v = flameshotcmd } },
 };
 
@@ -241,7 +243,7 @@ static const Key keys[] = {
 /* click can be ClkFollowSymbol, ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
 	/* click                event mask      button          function           argument */
-	{ ClkButton,		        0,		          Button1,	      spawn,		         {.v = dmenucmd } },
+	{ ClkButton,		        0,		          Button1,	      spawn,		         {.v = buttoncmd } },
 	{ ClkLtSymbol,          0,              Button1,        setlayout,         {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,         {.v = &layouts[2]} },
 	{ ClkFollowSymbol,      0,              Button1,        togglefollow,      {0} },

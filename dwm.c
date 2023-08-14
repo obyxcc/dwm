@@ -79,7 +79,7 @@
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-enum { SchemeNorm, SchemeSel, SchemeStatus, SchemeTagsNorm, SchemeInfoSel, SchemeInfoNorm, SchemeScratchNorm, SchemeScratchSel, SchemeButtonBar }; /* color schemes */
+enum { SchemeNorm, SchemeSel, SchemeButtonBar, SchemeTagsNorm, SchemeLayout, SchemeWF, SchemeInfoSel, SchemeInfoNorm, SchemeStatus, SchemeScratchNorm, SchemeScratchSel}; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
        NetSystemTray, NetSystemTrayOP, NetSystemTrayOrientation, NetSystemTrayOrientationHorz,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
@@ -642,13 +642,14 @@ buttonpress(XEvent *e)
 	}
 	if (ev->window == selmon->barwin) {
 		i = x = 0;
-		x += TEXTW(buttonbar); // FIXME integrate with showbutton
-		if(ev->x < x) {
+    if (showbutton)
+		  x += TEXTW(buttonbar);
+		if(ev->x < x && showbutton) {
 			click = ClkButton;
 		} else {
 		do
 		  if (showtags)
-			x += TEXTW(tags[i]);
+			  x += TEXTW(tags[i]);
 		while (ev->x >= x && ++i < LENGTH(tags));
 		if (i < LENGTH(tags) && showtags) {
 			click = ClkTagBar;
@@ -1194,12 +1195,13 @@ drawbar(Monitor *m)
 	}
   if (showlayout) {
     w = TEXTW(m->ltsymbol);
-    drw_setscheme(drw, scheme[SchemeTagsNorm]);
+    drw_setscheme(drw, scheme[SchemeLayout]);
     x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
   }
 
   if (showwfsymbol) {
     w = TEXTW(m->wfsymbol);
+    drw_setscheme(drw, scheme[SchemeWF]);
     x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->wfsymbol, 0);
   }
 
