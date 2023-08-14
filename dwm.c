@@ -79,14 +79,14 @@
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-enum { SchemeNorm, SchemeSel, SchemeStatus, SchemeTagsNorm, SchemeInfoSel, SchemeInfoNorm, SchemeScratchNorm, SchemeScratchSel }; /* color schemes */
+enum { SchemeNorm, SchemeSel, SchemeStatus, SchemeTagsNorm, SchemeInfoSel, SchemeInfoNorm, SchemeScratchNorm, SchemeScratchSel, SchemeButtonBar }; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
        NetSystemTray, NetSystemTrayOP, NetSystemTrayOrientation, NetSystemTrayOrientationHorz,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
        NetWMWindowTypeDialog, NetClientList, NetClientInfo, NetLast }; /* EWMH atoms */
 enum { Manager, Xembed, XembedInfo, XLast }; /* Xembed atoms */
 enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
-enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
+enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkButton, ClkWinTitle,
        ClkClientWin, ClkRootWin, ClkFollowSymbol, ClkLast }; /* clicks */
 
 typedef union {
@@ -642,6 +642,10 @@ buttonpress(XEvent *e)
 	}
 	if (ev->window == selmon->barwin) {
 		i = x = 0;
+		x += TEXTW(buttonbar); // FIXME integrate with showbutton
+		if(ev->x < x) {
+			click = ClkButton;
+		} else {
 		do
 		  if (showtags)
 			x += TEXTW(tags[i]);
@@ -679,9 +683,9 @@ buttonpress(XEvent *e)
 					s--;
 				}
 			}
+    } else if (showtitle)
+			  click = ClkWinTitle;
     }
-		else if (showtitle)
-			click = ClkWinTitle;
 	} else if ((c = wintoclient(ev->window))) {
 		focus(c);
 		restack(selmon);
@@ -1170,6 +1174,11 @@ drawbar(Monitor *m)
 			urg |= c->tags;
 	}
 	x = 0;
+    if (showbutton) {
+      w = TEXTW(buttonbar);
+      drw_setscheme(drw, scheme[SchemeButtonBar]);
+      x = drw_text(drw, x, 0, w, bh, lrpad / 2, buttonbar, 0);
+    }
 	for (i = 0; i < LENGTH(tags); i++) {
     if (showtags) {
       w = TEXTW(tags[i]);
