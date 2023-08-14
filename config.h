@@ -7,8 +7,8 @@ static const unsigned int gappx     = 12;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayspacing = 2;   /* systray spacing */
-static const unsigned int systrayiconsize = 32; /* systray icon size in px */
+static const unsigned int systrayspacing = 12;   /* systray spacing */
+static const unsigned int systrayiconsize = 20; /* systray icon size in px */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -32,17 +32,19 @@ static const char fg_sel[]          = "#CDD6F4";
 static const char bg_sel[]          = "#313244";
 static const char border[]          = "#1E1E2E";
 static const char border_sel[]      = "#CDD6F4";
+static const char button_fg[]       = "#89b4fa";
+static const char button_bg[]       = "#242437";
 static const char *colors[][3]      = {
 	/*                      fg         bg         border   */
 	[SchemeNorm]        = { fg,        bg,        border },
 	[SchemeSel]         = { fg_sel, 	 bg_sel,    border_sel },
 	[SchemeStatus]      = { fg,        bg,        border }, // Statusbar right {text,background,not used but cannot be empty}
 	[SchemeTagsNorm]    = { fg,        bg,        border }, // Tagbar left unselected {text,background,not used but cannot be empty}
-	[SchemeInfoSel]     = { fg,        bg,    border }, // infobar middle  selected {text,background,not used but cannot be empty}
+	[SchemeInfoSel]     = { fg,        bg,        border }, // infobar middle  selected {text,background,not used but cannot be empty}
 	[SchemeInfoNorm]    = { fg,        bg,        border }, // infobar middle  unselected {text,background,not used but cannot be empty}
 	[SchemeScratchSel]  = { bg_sel,    fg,        border_sel  },
 	[SchemeScratchNorm] = { bg_sel,    fg,        border },
-	[SchemeButtonBar]   = { fg,        bg,        border },
+	[SchemeButtonBar]   = { button_fg, button_bg, border },
 };
 
 /* autostart applications */
