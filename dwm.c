@@ -1203,7 +1203,7 @@ drawbar(Monitor *m)
     x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->wfsymbol, 0);
   }
 
-	if ((w = m->ww - tw - stw - x) > bh) {
+	if ((w = m->ww - tw - stw - x - sp) > bh) {
 		if (m->sel && showtitle) {
 			drw_setscheme(drw, scheme[m == selmon ? SchemeInfoSel : SchemeInfoNorm]);
 			drw_text(drw, x - 2 * sp, vertpadbar / 2, w, bh - vertpadbar, lrpad / 2, m->sel->name, 0);
@@ -1211,7 +1211,7 @@ drawbar(Monitor *m)
 				drw_rect(drw, x + boxs, boxs + vertpadbar / 2, boxw, boxw, m->sel->isfixed, 0);
 		} else {
 			drw_setscheme(drw, scheme[SchemeInfoNorm]);
-			drw_rect(drw, x, 0, w, bh, 1, 1);
+			drw_rect(drw, x - sp, 0, w - sp, bh, 1, 1);
 		}
 	}
 	drw_map(drw, m->barwin, 0, 0, m->ww - stw, bh);
