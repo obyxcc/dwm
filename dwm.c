@@ -1273,14 +1273,14 @@ focus(Client *c)
 		detachstack(c);
 		attachstack(c);
 		grabbuttons(c, 1);
+    if (c->scratchkey != 0)
+      XSetWindowBorder(dpy, c->win, scheme[SchemeScratchSel][ColBorder].pixel);
+    else
+      XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
 		/* Avoid flickering when another client appears and the border
 		 * is restored */
-		if (!solitary(c)) {
-      if (c->scratchkey != 0)
-        XSetWindowBorder(dpy, c->win, scheme[SchemeScratchSel][ColBorder].pixel);
-      else
-        XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
-		}
+		if (!solitary(c))
+			XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
 		setfocus(c);
 	} else {
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
