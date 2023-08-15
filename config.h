@@ -12,7 +12,7 @@ static const unsigned int systrayiconsize = 16; /* systray icon size in px */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
-static const int showbutton         = 0;        /* 0 means no title */
+static const int showbutton         = 1;        /* 0 means no title */
 static const int showtags           = 1;        /* 0 means no tags */
 static const int showlayout         = 1;        /* 0 means no layout indicator */
 static const int showwfsymbol       = 1;        /* 0 means no window follow symbol */
@@ -34,14 +34,13 @@ static const char border[]          = "#1E1E2E";
 static const char border_sel[]      = "#CDD6F4";
 static const char button_fg[]       = "#89b4fa";
 static const char button_bg[]       = "#242437";
-static const char layout_fg[]       = "#cba6f7";
 static const char *colors[][3]      = {
 	/*                      fg         bg         border   */
 	[SchemeNorm]        = { fg,        bg,        border },
 	[SchemeSel]         = { fg_sel, 	 bg_sel,    border_sel },
 	[SchemeButtonBar]   = { button_fg, button_bg, border },
 	[SchemeTagsNorm]    = { fg,        bg,        border }, // Tagbar left unselected {text,background,not used but cannot be empty}
-	[SchemeLayout]      = { layout_fg, button_bg, border },
+	[SchemeLayout]      = { fg,        bg,        border },
 	[SchemeWF]          = { fg,        bg,        border },
 	[SchemeInfoSel]     = { fg,        bg_sel,    border }, // infobar middle  selected {text,background,not used but cannot be empty}
 	[SchemeInfoNorm]    = { fg,        bg,        border }, // infobar middle  unselected {text,background,not used but cannot be empty}
@@ -63,8 +62,13 @@ static const char *const autostart[] = {
 /* tagging */
 static const char buttonbar[] = " ";
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-static const char *tagsalt[] = { "󰖟 ", " ", " ", "󰙯 ", " ", "󰎈 ", "󰕝 ", " ", " " };
+static const char *tagsalt[] = { "󰖟", "", "", "󰙯", "", "󰎈", "󰕝", "", "" };
 static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
+
+static const unsigned int ulinepad	= 0;	/* horizontal padding between the underline and tag */
+static const unsigned int ulinestroke	= 3;	/* thickness / height of the underline */
+static const unsigned int ulinevoffset	= 0;	/* how far above the bottom of the bar the line should appear */
+static const int ulineall 		= 0;	/* 1 to show underline on all tags, 0 for just the active ones */
 
 static const char *tagsel[][2] = {
 	{ "#CDD6F4", "#313244" },
@@ -105,9 +109,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "󰕮 ",      tile },    /* first entry is default */
-	{ "󱂬 ",      NULL },    /* no layout function means floating behavior */
-	{ "󰖯 ",      monocle },
+	{ "󰕰",      tile },    /* first entry is default */
+	{ "",      NULL },    /* no layout function means floating behavior */
+	{ "",      monocle },
 };
 
 /* window following */
