@@ -2,12 +2,12 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx  = 4;        /* border pixel of windows */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int gappx     = 12;       /* gaps between windows */
 static const unsigned int snap      = 5;        /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayspacing = 12;  /* systray spacing */
+static const unsigned int systrayspacing = 16;  /* systray spacing */
 static const unsigned int systrayiconsize = 16; /* systray icon size in px */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;        /* 0 means no systray */
@@ -21,8 +21,8 @@ static const int showstatus         = 1;        /* 0 means no status bar */
 static const int showfloating       = 1;        /* 0 means no floating indicator */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 4;        /* 2 is the default spacing around the bar's font */
-static const int horizpadbar        = 12;       /* horizontal padding for statusbar */
-static const int vertpadbar         = 12;       /* vertical padding for statusbar */
+static const int horizpadbar        = 16;       /* horizontal padding for statusbar */
+static const int vertpadbar         = 16;       /* vertical padding for statusbar */
 static const int vertpad            = 0;        /* vertical padding of bar */
 static const int sidepad            = 0;        /* horizontal padding of bar */
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=12" };
@@ -33,7 +33,7 @@ static const char bg_sel[]          = "#313244";
 static const char border[]          = "#1E1E2E";
 static const char border_sel[]      = "#CDD6F4";
 static const char tag_fg[]          = "#CDD6F4";
-static const char button_fg[]       = "#89b4fa";
+static const char button_fg[]       = "#74c7ec";
 static const char button_bg[]       = "#242437";
 static const char *colors[][3]      = {
 	/*                      fg         bg         border   */
@@ -90,9 +90,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class              instance    title           tags mask     isfloating  isterminal  noswallow  monitor   scratch key */
-	{ "flameshot",        NULL,       NULL,           0,            1,          0,          1,         -1,       0 },
 	{ "solaar",           NULL,       NULL,           0,            1,          0,          1,         -1,       0 },
-	{ "Msgcompose",       NULL,       NULL,           0,            1,          0,          1,         -1,       0 },
 	{ "st-256color",      NULL,       NULL,           0,            0,          1,          0,         -1,       0 },
 	{ NULL,               NULL,       "spterm",       0,            1,          0,          1,         -1,       's' },
 	{ NULL,               NULL,       "spmix",        0,            1,          0,          1,         -1,       'a' },
@@ -100,6 +98,7 @@ static const Rule rules[] = {
 	{ NULL,               NULL,       "spcldr",       0,            1,          0,          1,         -1,       'c' },
 	{ NULL,               NULL,       "sprss",        0,            1,          0,          1,         -1,       'r' },
 	{ NULL,               NULL,       "sptop",        0,            1,          0,          1,         -1,       'p' },
+	{ "webcord",          NULL,       NULL,           0,            1,          0,          1,         -1,       'v' },
 	{ NULL,               NULL,       "Event Tester", 0,            0,          0,          1,         -1,       0 }, /* xev */
 };
 
@@ -142,6 +141,7 @@ static const char *spmixcmd[] = {"a", "st", "-t", "spmix", "-g", "144x41", "-e",
 static const char *spmuscmd[] = {"m", "st", "-t", "spmus", "-g", "144x41", "-e", "cmus", NULL};
 static const char *spcldrcmd[] = {"c", "st", "-t", "spcldr", "-g", "144x41", "-e", "calcurse", NULL};
 static const char *sprsscmd[] = {"r", "st", "-t", "sprss", "-g", "144x41", "-e", "newsboat", NULL};
+static const char *spcordmd[] = {"v", "webcord", NULL};
 
 /* commands */
 static const char *termcmd[]  = { "st", NULL };
@@ -149,7 +149,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-c", "-p", "󰍉 Run:", NULL };
 static const char *dmenupcmd[] = { "dmenu_prun", NULL };
 static const char *passmenucmd[]  = { "passmenu", NULL };
 static const char *fmcmd[]  = { "st", "-e", "nnn", NULL };
-static const char *buttoncmd[] = { "dmenu_run", "-p", "󰍉 Run:", "-z", "400px", "-x", "6px", "-y", "44px", NULL };
+static const char *buttoncmd[] = { "dmenu_run", "-p", "󰍉 Run:", "-z", "400px", "-x", "6px", "-y", "48px", NULL };
 static const char *brightnesscmd[2][4] = {
 	{ "brillo", "-A", "10", NULL },
 	{ "brillo", "-U", "10", NULL },
@@ -164,7 +164,7 @@ static const char *playerctlcmd[3][3] = {
 	{ "playerctl", "next", NULL },
 	{ "playerctl", "previous", NULL },
 };
-static const char *flameshotcmd[] = { "flameshot", "gui", NULL };
+static const char *scrotcmd[] = { "dmscrot", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key                       function     argument */
@@ -238,11 +238,12 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_c,      togglescratch,  {.v = spcldrcmd } },
 	{ MODKEY|ShiftMask,             XK_b,      togglescratch,  {.v = sprsscmd } },
 	{ MODKEY|ShiftMask,             XK_p,      togglescratch,  {.v = sptopcmd } },
+	{ MODKEY|ShiftMask,             XK_v,      togglescratch,  {.v = spcordmd } },
 
 	/* program binds */
 	{ MODKEY|ShiftMask,             XK_n,											spawn,          {.v = fmcmd } },
 	{ MODKEY,                       XK_p,											spawn,          {.v = passmenucmd } },
-	{ MODKEY,                       XK_Print,       					spawn,          {.v = flameshotcmd } },
+	{ MODKEY,                       XK_Print,       					spawn,          {.v = scrotcmd } },
 };
 
 /* button definitions */
