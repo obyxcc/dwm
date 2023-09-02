@@ -20,9 +20,9 @@ static const int showtitle          = 0;        /* 0 means no title */
 static const int showstatus         = 1;        /* 0 means no status bar */
 static const int showfloating       = 1;        /* 0 means no floating indicator */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int user_bh            = 4;        /* 2 is the default spacing around the bar's font */
-static const int horizpadbar        = 16;       /* horizontal padding for statusbar */
-static const int vertpadbar         = 16;       /* vertical padding for statusbar */
+static const int user_bh            = 6;        /* 2 is the default spacing around the bar's font */
+static const int horizpadbar        = 14;       /* horizontal padding for statusbar */
+static const int vertpadbar         = 14;       /* vertical padding for statusbar */
 static const int vertpad            = 0;        /* vertical padding of bar */
 static const int sidepad            = 0;        /* horizontal padding of bar */
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=12" };
@@ -57,12 +57,11 @@ static const char *const autostart[] = {
 	"xwallpaper", "--daemon", "--zoom", "/home/cole/.config/wall", NULL,
 	"picom", "-b", NULL,
 	"dwmblocks", NULL,
-	"solaar", "-w", "hide", NULL,
 	NULL /* terminate */
 };
 
 /* tagging */
-static const char buttonbar[] = " ";
+static const char buttonbar[] = " ";
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const char *tagsalt[] = { "󰖟", "", "", "󰙯", "", "󰎈", "󰕝", "", "" };
 static const int momentaryalttags = 0; /* 1 means alttags will show only when key is held down*/
@@ -90,7 +89,6 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class              instance    title           tags mask     isfloating  isterminal  noswallow  monitor   scratch key */
-	{ "solaar",           NULL,       NULL,           0,            1,          0,          1,         -1,       0 },
 	{ "st-256color",      NULL,       NULL,           0,            0,          1,          0,         -1,       0 },
 	{ NULL,               NULL,       "spterm",       0,            1,          0,          1,         -1,       's' },
 	{ NULL,               NULL,       "spmix",        0,            1,          0,          1,         -1,       'a' },
@@ -98,7 +96,6 @@ static const Rule rules[] = {
 	{ NULL,               NULL,       "spcldr",       0,            1,          0,          1,         -1,       'c' },
 	{ NULL,               NULL,       "sprss",        0,            1,          0,          1,         -1,       'r' },
 	{ NULL,               NULL,       "sptop",        0,            1,          0,          1,         -1,       'p' },
-	{ "webcord",          NULL,       NULL,           0,            1,          0,          1,         -1,       'v' },
 	{ NULL,               NULL,       "Event Tester", 0,            0,          0,          1,         -1,       0 }, /* xev */
 };
 
@@ -141,7 +138,6 @@ static const char *spmixcmd[] = {"a", "st", "-t", "spmix", "-g", "144x41", "-e",
 static const char *spmuscmd[] = {"m", "st", "-t", "spmus", "-g", "144x41", "-e", "cmus", NULL};
 static const char *spcldrcmd[] = {"c", "st", "-t", "spcldr", "-g", "144x41", "-e", "calcurse", NULL};
 static const char *sprsscmd[] = {"r", "st", "-t", "sprss", "-g", "144x41", "-e", "newsboat", NULL};
-static const char *spcordmd[] = {"v", "webcord", NULL};
 
 /* commands */
 static const char *termcmd[]  = { "st", NULL };
@@ -167,7 +163,7 @@ static const char *playerctlcmd[3][3] = {
 static const char *scrotcmd[] = { "dmscrot", NULL };
 
 static const Key keys[] = {
-	/* modifier                     key                       function     argument */
+	/* modifier                     key                       function        argument */
 	{ MODKEY,                       XK_d,                     spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_d,                     spawn,          {.v = dmenupcmd } },
 	{ MODKEY,                       XK_Return,                spawn,          {.v = termcmd } },
@@ -198,8 +194,6 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Tab,                   view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,                     killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_x,                     killunsel,      {0} },
-	{ MODKEY|ControlMask,           XK_x,                     killallunsel,   {0} },
-	{ MODKEY|ShiftMask|ControlMask, XK_x,                     killall,        {0} },
 	{ MODKEY,                       XK_t,                     setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,											setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,											setlayout,      {.v = &layouts[2]} },
@@ -238,7 +232,6 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_c,      togglescratch,  {.v = spcldrcmd } },
 	{ MODKEY|ShiftMask,             XK_b,      togglescratch,  {.v = sprsscmd } },
 	{ MODKEY|ShiftMask,             XK_p,      togglescratch,  {.v = sptopcmd } },
-	{ MODKEY|ShiftMask,             XK_v,      togglescratch,  {.v = spcordmd } },
 
 	/* program binds */
 	{ MODKEY|ShiftMask,             XK_n,											spawn,          {.v = fmcmd } },
