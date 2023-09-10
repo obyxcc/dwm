@@ -21,8 +21,8 @@ static const int showstatus         = 1;        /* 0 means no status bar */
 static const int showfloating       = 1;        /* 0 means no floating indicator */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 6;        /* 2 is the default spacing around the bar's font */
-static const int horizpadbar        = 14;       /* horizontal padding for statusbar */
-static const int vertpadbar         = 14;       /* vertical padding for statusbar */
+static const int horizpadbar        = 16;       /* horizontal padding for statusbar */
+static const int vertpadbar         = 16;       /* vertical padding for statusbar */
 static const int vertpad            = 0;        /* vertical padding of bar */
 static const int sidepad            = 0;        /* horizontal padding of bar */
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=12" };
@@ -89,6 +89,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class              instance    title           tags mask     isfloating  isterminal  noswallow  monitor   scratch key */
+	// { "mpv",              NULL,       NULL,           0,            1,          0,          0,         -1,       0 },
 	{ "st-256color",      NULL,       NULL,           0,            0,          1,          0,         -1,       0 },
 	{ NULL,               NULL,       "spterm",       0,            1,          0,          1,         -1,       's' },
 	{ NULL,               NULL,       "spmix",        0,            1,          0,          1,         -1,       'a' },
@@ -145,7 +146,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-c", "-p", "󰍉 Run:", NULL };
 static const char *dmenupcmd[] = { "dmenu_prun", NULL };
 static const char *passmenucmd[]  = { "passmenu", NULL };
 static const char *fmcmd[]  = { "st", "-e", "nnn", NULL };
-static const char *buttoncmd[] = { "dmenu_run", "-p", "󰍉 Run:", "-z", "400px", "-x", "6px", "-y", "48px", NULL };
+static const char *buttoncmd[] = { "dmenu_run", "-p", "󰍉 Run:", "-z", "400px", "-x", "6px", "-y", "50px", NULL };
 static const char *brightnesscmd[2][4] = {
 	{ "brillo", "-A", "10", NULL },
 	{ "brillo", "-U", "10", NULL },
@@ -179,6 +180,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_n,                     togglefollow,   {0} },
 	{ MODKEY,                       XK_j,                     focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,                     focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_u,                     focusurgent,    {0} },
 	{ MODKEY|ShiftMask,             XK_j,                     pushdown,       {0} },
 	{ MODKEY|ShiftMask,             XK_k,                     pushup,         {0} },
 	{ MODKEY,                       XK_Insert,                incnmaster,     {.i = +1 } },
