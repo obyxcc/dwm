@@ -1,0 +1,80 @@
+From bcd178cc2321c824080dfaad14c9c18462b05c06 Mon Sep 17 00:00:00 2001
+From: sympodius <mail@sympodius.net>
+Date: Fri, 10 Mar 2023 20:56:49 +0000
+Subject: [PATCH] Patch tested for 6.4 release.
+
+---
+ config.def.h |  2 ++
+ dwm.c        | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
+
+diff --git a/config.def.h b/config.def.h
+index 9efa774..bbb5b1a 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -42,6 +42,7 @@ static const Layout layouts[] = {
+ 	{ "[]=",      tile },    /* first entry is default */
+ 	{ "><>",      NULL },    /* no layout function means floating behavior */
+ 	{ "[M]",      monocle },
++	{ "[][]=",    tilewide },
+ };
+ 
+ /* key definitions */
+@@ -77,6 +78,7 @@ static const Key keys[] = {
+ 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+ 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+ 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
++	{ MODKEY,                       XK_w,      setlayout,      {.v = &layouts[3]} },
+ 	{ MODKEY,                       XK_space,  setlayout,      {0} },
+ 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+ 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+diff --git a/dwm.c b/dwm.c
+index c2bd871..93a5156 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -209,6 +209,7 @@ static void spawn(const Arg *arg);
+ static void tag(const Arg *arg);
+ static void tagmon(const Arg *arg);
+ static void tile(Monitor *m);
++static void tilewide(Monitor *m);
+ static void togglebar(const Arg *arg);
+ static void togglefloating(const Arg *arg);
+ static void toggletag(const Arg *arg);
+@@ -1704,6 +1705,34 @@ tile(Monitor *m)
+ 		}
+ }
+ 
++void
++tilewide(Monitor *m)
++{
++        unsigned int i, n, w, h, mw, mx, ty;
++	Client *c;
++
++	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
++	if (n == 0)
++		return;
++
++	if (n > m->nmaster)
++		mw = m->nmaster ? m->ww * m->mfact : 0;
++	else
++		mw = m->ww;
++	for (i = mx = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
++		if (i < m->nmaster) {
++		        w = (mw - mx) / (MIN(n, m->nmaster) - i);
++		        resize(c, m->wx + mx, m->wy, w - (2*c->bw), (m->wh - ty) - (2*c->bw), 0);
++		        if  (mx + WIDTH(c) < m->ww)
++		                mx += WIDTH(c);
++		} else {
++			h = (m->wh - ty) / (n - i);
++			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
++			if (ty + HEIGHT(c) < m->wh)
++				ty += HEIGHT(c);
++		}
++}
++
+ void
+ togglebar(const Arg *arg)
+ {
+-- 
+2.39.2
+

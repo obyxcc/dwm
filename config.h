@@ -21,11 +21,11 @@ static const int showstatus         = 1;        /* 0 means no status bar */
 static const int showfloating       = 1;        /* 0 means no floating indicator */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 6;        /* 2 is the default spacing around the bar's font */
-static const int horizpadbar        = 16;       /* horizontal padding for statusbar */
-static const int vertpadbar         = 16;       /* vertical padding for statusbar */
+static const int horizpadbar        = 10;       /* horizontal padding for statusbar */
+static const int vertpadbar         = 10;       /* vertical padding for statusbar */
 static const int vertpad            = 0;        /* vertical padding of bar */
 static const int sidepad            = 0;        /* horizontal padding of bar */
-static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=12" };
+static const char *fonts[]          = { "JetBrainsMono Nerd Font:style=Bold:size=10" };
 static const char fg[]              = "#CDD6F4";
 static const char bg[]              = "#181825";
 static const char fg_sel[]          = "#CDD6F4";
@@ -109,8 +109,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "󰕰",      tile },    /* first entry is default */
-	{ "",      NULL },    /* no layout function means floating behavior */
-	{ "",      monocle },
+	{ "󰡃",      tilewide },
+	{ "󰖲",      NULL },    /* no layout function means floating behavior */
+	{ "󰝤",      monocle },
 };
 
 /* window following */
@@ -146,7 +147,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-c", "-p", "󰍉 Run:", NULL };
 static const char *dmenupcmd[] = { "dmenu_prun", NULL };
 static const char *passmenucmd[]  = { "passmenu", NULL };
 static const char *fmcmd[]  = { "st", "-e", "nnn", NULL };
-static const char *buttoncmd[] = { "dmenu_run", "-p", "󰍉 Run:", "-z", "400px", "-x", "6px", "-y", "50px", NULL };
+static const char *buttoncmd[] = { "dmenu_run", "-p", "󰍉 Run:", "-z", "400px", "-x", "6px", "-y", "40px", NULL };
 static const char *brightnesscmd[2][4] = {
 	{ "brillo", "-A", "10", NULL },
 	{ "brillo", "-U", "10", NULL },
@@ -196,12 +197,13 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Tab,                   view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,                     killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_x,                     killunsel,      {0} },
-	{ MODKEY,                       XK_t,                     setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,											setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,											setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ShiftMask,             XK_f,                     togglefullscr,  {0} },
+	{ MODKEY,                       XK_t,											setlayout,      {.v = &layouts[0]} },
+  { MODKEY,                       XK_w,                     setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_f,											setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_m,                     setlayout,      {.v = &layouts[3]} },
 	{ MODKEY,                       XK_space,									setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,									togglefloating, {0} },
+	{ MODKEY|ShiftMask,             XK_f,                     togglefullscr,  {0} },
 	{ MODKEY,                       XK_0,											view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,											tag,            {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_h,											focusmon,       {.i = -1 } },
